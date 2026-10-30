@@ -127,28 +127,10 @@ html:not(.js) .rv{opacity:1;transform:none}
 #burst{position:fixed;inset:0;z-index:9998;pointer-events:none;overflow:hidden}
 #burst i{position:absolute;left:0;top:0;font-style:normal;line-height:1;user-select:none;will-change:transform,opacity;
   filter:drop-shadow(0 4px 10px rgba(0,0,0,.45))}
-#finale{position:fixed;left:50%;top:50%;z-index:10000;pointer-events:none;font-size:min(28vw,220px);line-height:1;
-  margin:0;transform:translate(-50%,-50%) scale(.2);opacity:0;user-select:none;
-  filter:drop-shadow(0 12px 40px rgba(0,0,0,.55)) drop-shadow(0 0 48px rgba(255,214,90,.35));will-change:transform,opacity}
-#finale.go{animation:finalePop 2.4s cubic-bezier(.2,.8,.2,1) forwards}
-@keyframes finalePop{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.15) rotate(-12deg)}
-  12%{opacity:1;transform:translate(-50%,-50%) scale(1.18) rotate(4deg)}
-  22%{transform:translate(-50%,-50%) scale(.92) rotate(-2deg)}
-  32%{transform:translate(-50%,-50%) scale(1.05) rotate(0)}
-  55%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}
-  70%{opacity:1;transform:translate(-50%,-50%) scale(1.12) rotate(3deg)}
-  100%{opacity:0;transform:translate(-50%,-55%) scale(1.35) rotate(-4deg)}
-}
-@media (prefers-reduced-motion:reduce){
-  #finale.go{animation:finalePopReduce 1.6s ease-out forwards}
-}
-@keyframes finalePopReduce{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}
-  20%{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  80%{opacity:1}
-  100%{opacity:0}
-}
+#finale-layer{position:fixed;inset:0;z-index:10000;pointer-events:none;overflow:hidden}
+#finale-layer b{position:absolute;left:0;top:0;font-weight:400;font-size:min(18vw,140px);line-height:1;
+  opacity:0;user-select:none;will-change:transform,opacity;
+  filter:drop-shadow(0 10px 28px rgba(0,0,0,.5)) drop-shadow(0 0 32px rgba(255,214,90,.3))}
 #face.idle b{animation:breathe 3.2s ease-in-out infinite}
 @keyframes breathe{50%{translate:0 -2px;scale:1.04}}
 .cur-on #glow,.cur-on #face{opacity:1}
@@ -254,7 +236,7 @@ html:not(.js) .rv{opacity:1;transform:none}
 <div id="glow" aria-hidden="true"></div>
 <div id="face" aria-hidden="true"><b>🙂</b></div>
 <div id="burst" aria-hidden="true"></div>
-<div id="finale" aria-hidden="true">😉</div>
+<div id="finale-layer" aria-hidden="true"></div>
 
 <script>
 document.documentElement.classList.add("js");
@@ -383,16 +365,16 @@ copy.addEventListener("click", async () => {
   })();
 })();
 
-/* empty-space reactions: click = burst; hold = spam then big wink → sunglasses finale */
+/* empty-space reactions: light click burst; hold = gentle spam then twin wink/sunglasses among the spray */
 (() => {
   if (!matchMedia("(hover:hover) and (pointer:fine)").matches) return;
   const layer = document.getElementById("burst");
-  const finale = document.getElementById("finale");
+  const finLayer = document.getElementById("finale-layer");
   const skip = "a, button, input, textarea, select, label, summary, iframe, video, .card, .frame, .pill, [role=button], [onclick], [contenteditable]";
-  const pool = ["❤️","❤️","❤️","👍","👍","👍","😍","💙","✨","🔥","👏","💜"];
+  const pool = ["❤️","❤️","👍","👍","😍","💙","✨","🔥"];
   const pick = () => pool[Math.random()*pool.length|0];
-  const HOLD_MS = 1600;   /* how long until the big wink/sunglasses */
-  const SPAM_MS = 85;     /* interval between hold bursts */
+  const HOLD_MS = 1600;
+  const SPAM_MS = 160; /* slower = fewer sprays */
   let holding = false, holdStart = 0, spamTimer = 0, finaleDone = false, px = 0, py = 0, suppressedClick = false;
 
   function okTarget(e){
@@ -404,12 +386,12 @@ copy.addEventListener("click", async () => {
   }
 
   function spawnBurst(x, y, heavy){
-    if (layer.childElementCount > 90) return;
-    const n = reduce ? 1 : (heavy ? 4 + (Math.random()*3|0) : 6 + (Math.random()*3|0));
+    if (layer.childElementCount > 40) return;
+    const n = reduce ? 1 : (heavy ? 2 + (Math.random()*2|0) : 3 + (Math.random()*2|0));
     for (let i = 0; i < n; i++) {
       const el = document.createElement("i");
       el.textContent = i === 0 ? (Math.random() < .5 ? "❤️" : "👍") : pick();
-      const size = (heavy ? (18 + Math.random()*22) : (i === 0 ? 40 : 20 + Math.random()*18)) | 0;
+      const size = (heavy ? (16 + Math.random()*16) : (i === 0 ? 32 : 18 + Math.random()*14)) | 0;
       el.style.fontSize = size + "px";
       layer.appendChild(el);
       const x0 = x - size/2, y0 = y - size/2;
@@ -418,30 +400,46 @@ copy.addEventListener("click", async () => {
           {duration:700,easing:"ease-out"}).onfinish = () => el.remove();
         continue;
       }
-      const ang = (-90 + (Math.random()*2-1)*62) * Math.PI/180, dist = 80 + Math.random()*150;
-      const dx = Math.cos(ang)*dist*.75, dy = Math.sin(ang)*dist - 30, sway = (Math.random()*2-1)*32;
-      const r0 = (Math.random()*2-1)*22, r1 = r0 + (Math.random()*2-1)*40;
+      const ang = (-90 + (Math.random()*2-1)*58) * Math.PI/180, dist = 70 + Math.random()*110;
+      const dx = Math.cos(ang)*dist*.75, dy = Math.sin(ang)*dist - 24, sway = (Math.random()*2-1)*24;
+      const r0 = (Math.random()*2-1)*18, r1 = r0 + (Math.random()*2-1)*30;
       const T = (xx, yy, s, r) => `translate(${xx.toFixed(1)}px,${yy.toFixed(1)}px) scale(${s}) rotate(${r.toFixed(1)}deg)`;
       el.animate([
-        {transform:T(x0, y0, .2, r0), opacity:0},
-        {transform:T(x0+dx*.25, y0+dy*.2, 1.3, r0), opacity:1, offset:.12},
-        {transform:T(x0+dx*.55+sway, y0+dy*.55, 1, (r0+r1)/2), opacity:1, offset:.48},
-        {transform:T(x0+dx-sway*.5, y0+dy, .8, r1), opacity:0}
-      ], {duration:900 + Math.random()*600, delay:i ? Math.random()*80 : 0, easing:"cubic-bezier(.2,.7,.3,1)", fill:"backwards"})
+        {transform:T(x0, y0, .25, r0), opacity:0},
+        {transform:T(x0+dx*.25, y0+dy*.2, 1.15, r0), opacity:1, offset:.14},
+        {transform:T(x0+dx*.55+sway, y0+dy*.55, 1, (r0+r1)/2), opacity:1, offset:.5},
+        {transform:T(x0+dx-sway*.5, y0+dy, .85, r1), opacity:0}
+      ], {duration:950 + Math.random()*500, delay:i ? Math.random()*70 : 0, easing:"cubic-bezier(.2,.7,.3,1)", fill:"backwards"})
         .onfinish = () => el.remove();
     }
   }
 
-  function playFinale(){
+  function playFinale(x, y){
     if (finaleDone) return;
     finaleDone = true;
-    finale.textContent = "😉";
-    finale.classList.remove("go");
-    void finale.offsetWidth;
-    finale.classList.add("go");
-    /* mid-animation swap to sunglasses */
-    setTimeout(() => { finale.textContent = "😎"; }, reduce ? 400 : 900);
-    setTimeout(() => { finale.classList.remove("go"); finaleDone = false; }, 2500);
+    const size = Math.min(innerWidth * 0.14, 120) | 0;
+    const sides = [
+      {dx: -72 - Math.random()*36, dy: -28 - Math.random()*40, rot: -14},
+      {dx:  72 + Math.random()*36, dy: -20 - Math.random()*40, rot:  14}
+    ];
+    sides.forEach((s, i) => {
+      const el = document.createElement("b");
+      el.textContent = "😉";
+      el.style.fontSize = size + "px";
+      finLayer.appendChild(el);
+      const x0 = x - size/2 + s.dx, y0 = y - size/2 + s.dy;
+      const T = (xx, yy, sc, r) => `translate(${xx.toFixed(1)}px,${yy.toFixed(1)}px) scale(${sc}) rotate(${r}deg)`;
+      const anim = el.animate([
+        {transform:T(x0, y0, .2, s.rot), opacity:0},
+        {transform:T(x0, y0 - 18, 1.15, s.rot * .4), opacity:1, offset:.18},
+        {transform:T(x0 + s.dx*.15, y0 - 36, 1, 0), opacity:1, offset:.45},
+        {transform:T(x0 + s.dx*.2, y0 - 70, 1.2, -s.rot*.3), opacity:1, offset:.7},
+        {transform:T(x0 + s.dx*.25, y0 - 110, 1.35, s.rot*.2), opacity:0}
+      ], {duration: reduce ? 1400 : 2200, delay: i * 90, easing:"cubic-bezier(.2,.8,.2,1)", fill:"forwards"});
+      setTimeout(() => { el.textContent = "😎"; }, (reduce ? 350 : 750) + i * 90);
+      anim.onfinish = () => el.remove();
+    });
+    setTimeout(() => { finaleDone = false; }, 2400);
   }
 
   function stopHold(){
@@ -459,9 +457,9 @@ copy.addEventListener("click", async () => {
     spawnBurst(px, py, false);
     spamTimer = setInterval(() => {
       if (!holding) return;
-      spawnBurst(px + (Math.random()*2-1)*18, py + (Math.random()*2-1)*12, true);
-      if (!finaleDone && performance.now() - holdStart >= HOLD_MS) playFinale();
-    }, reduce ? 220 : SPAM_MS);
+      spawnBurst(px + (Math.random()*2-1)*14, py + (Math.random()*2-1)*10, true);
+      if (!finaleDone && performance.now() - holdStart >= HOLD_MS) playFinale(px, py);
+    }, reduce ? 280 : SPAM_MS);
   });
 
   document.addEventListener("pointermove", e => {
@@ -469,12 +467,13 @@ copy.addEventListener("click", async () => {
     px = e.clientX; py = e.clientY;
   }, {passive:true});
 
-  const end = e => {
+  const end = () => {
     if (!holding) return;
     const held = performance.now() - holdStart;
+    const cx = px, cy = py;
     stopHold();
-    if (held > 180) suppressedClick = true; /* held = not a tap; swallow the following click */
-    if (held >= HOLD_MS && !finaleDone) playFinale();
+    if (held > 180) suppressedClick = true;
+    if (held >= HOLD_MS && !finaleDone) playFinale(cx, cy);
   };
   document.addEventListener("pointerup", end);
   document.addEventListener("pointercancel", end);
