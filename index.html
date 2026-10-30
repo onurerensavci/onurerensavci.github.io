@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Onur Eren Savcı — Marketing Artist</title>
+<meta name="description" content="Onur Eren Savcı — Marketing Artist. UA videos, playable ads and statics for mobile games. Based in Istanbul.">
+<meta property="og:title" content="Onur Eren Savcı — Marketing Artist">
+<meta property="og:description" content="UA videos, playable ads and statics for mobile games.">
+<meta property="og:image" content="https://i.ytimg.com/vi/zPc8RC-bSX4/maxresdefault.jpg">
+<meta name="theme-color" content="#0d0d0f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0d0f; --bg2:#141418; --ink:#f5f1e8; --mute:#8e8a82; --dim:#55534f;
+  --line:rgba(245,241,232,.1); --blue:#3b82f6;
+  --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  --pad:clamp(20px,4vw,56px); --max:1200px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(60vw 50vh at 50% -8%,rgba(59,130,246,.16),transparent 70%),
+    radial-gradient(40vw 40vh at 85% 30%,rgba(59,130,246,.05),transparent 70%)}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--blue);color:#fff}
+.wrap{position:relative;z-index:1;max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
+.label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:linear-gradient(to bottom,rgba(13,13,15,.82),rgba(13,13,15,.55));border-bottom:1px solid transparent;transition:border-color .3s}
+.nav.scrolled{border-bottom-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{font-weight:600;font-size:16px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.brand i{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 12px var(--blue)}
+.links{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:500}
+.links a{color:var(--ink);background:rgba(245,241,232,.04);border:1px solid rgba(245,241,232,.16);padding:8px 16px;border-radius:999px;
+  transition:background .2s,border-color .2s,color .2s,transform .2s;white-space:nowrap}
+.links a:hover{border-color:var(--ink);transform:translateY(-1px)}
+.links .cta{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.links .cta:hover{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* hero */
+.hero{min-height:calc(78vh - 68px);display:flex;flex-direction:column;justify-content:center;padding-block:96px 72px}
+h1{font-weight:900;font-size:clamp(52px,10.4vw,156px);line-height:.9;letter-spacing:-.055em;margin-left:-.04em}
+h1 .role{display:block;color:var(--ink);font-weight:800}
+h1 .role em{font-style:normal;color:var(--ink)}
+.lede{margin-top:40px;max-width:30ch;font-size:clamp(17px,1.5vw,21px);color:var(--mute);line-height:1.45}
+.lede strong{color:var(--ink);font-weight:500}
+
+/* reel — wider than other sections so 4K/ultrawide screens fill the showreel */
+.reel{padding-block:16px 120px}
+.reel.wrap{max-width:min(1760px,94vw)}
+.reel .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px}
+.frame{position:relative;aspect-ratio:16/9;width:100%;border-radius:18px;overflow:hidden;background:#000;
+  box-shadow:0 0 0 1px var(--line),0 48px 140px -48px rgba(59,130,246,.4)}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media (min-width:1800px){
+  .reel.wrap{max-width:min(2000px,90vw)}
+  .frame{border-radius:20px}
+}
+
+/* marquee */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;position:relative;z-index:1;padding:22px 0}
+.track{display:flex;gap:48px;width:max-content;animation:mq 38s linear infinite;font-weight:800;font-size:clamp(22px,2.6vw,36px);letter-spacing:-.03em;white-space:nowrap}
+.track span{display:flex;align-items:center;gap:48px}
+.track span::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.track span:nth-child(odd){color:var(--mute)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* statics */
+.statics{padding-block:120px 40px}
+.statics .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px}
+.grid{columns:4 220px;column-gap:16px}
+.card{break-inside:avoid;margin-bottom:16px;position:relative;border-radius:14px;overflow:hidden;
+  background:linear-gradient(160deg,#1b1b21,#121216);box-shadow:0 0 0 1px var(--line);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
+.card:hover{transform:translateY(-4px);box-shadow:0 0 0 1px rgba(245,241,232,.22),0 30px 60px -30px rgba(59,130,246,.45)}
+.card.sq{aspect-ratio:1/1}.card.tall{aspect-ratio:9/16}.card.pt{aspect-ratio:4/5}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 50% at 30% 20%,rgba(59,130,246,.12),transparent 70%)}
+.card span{position:absolute;left:14px;bottom:12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.card em{position:absolute;right:14px;top:12px;font-style:normal;font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.06em}
+
+/* about */
+.about{padding-block:120px;display:grid;grid-template-columns:1fr 2fr;gap:48px}
+.about p{font-size:clamp(22px,2.4vw,34px);line-height:1.25;letter-spacing:-.025em;font-weight:500;max-width:28ch}
+.about p span{color:var(--mute)}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px}
+.pill{font-size:14px;border:1px solid var(--line);border-radius:999px;padding:8px 16px;color:var(--mute);transition:all .2s;display:inline-flex;gap:8px;align-items:center}
+a.pill:hover{color:var(--ink);border-color:var(--ink)}
+
+/* contact */
+.contact{padding-block:40px 120px}
+.contact h2{font-weight:900;font-size:clamp(44px,8vw,120px);line-height:.92;letter-spacing:-.05em;margin:24px 0 40px}
+.contact h2 span{color:var(--blue)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.mail{background:var(--ink);color:var(--bg);font-weight:600;font-size:clamp(16px,1.6vw,20px);padding:16px 26px;border-radius:999px;display:inline-flex;gap:12px;align-items:center;transition:transform .2s,background .2s}
+.mail:hover{background:var(--blue);color:#fff;transform:translateY(-2px)}
+.copy{font:inherit;font-size:14px;background:none;cursor:pointer}
+
+footer{position:relative;z-index:1;border-top:1px solid transparent;
+  border-image:linear-gradient(90deg,transparent,var(--blue),transparent) 1}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;height:76px;color:var(--mute);font-size:14px}
+footer a:hover{color:var(--ink)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+html:not(.js) .rv{opacity:1;transform:none}
+
+/* cursor: soft glow + context-aware smiley buddy (no trail) */
+#glow{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;z-index:0;pointer-events:none;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(59,130,246,.13),rgba(59,130,246,.04) 55%,transparent);opacity:0;transition:opacity .6s;will-change:transform}
+#face{position:fixed;left:0;top:0;z-index:9999;pointer-events:none;font-size:26px;line-height:1;user-select:none;
+  filter:drop-shadow(0 0 10px rgba(255,214,90,.35)) drop-shadow(0 4px 10px rgba(0,0,0,.5));opacity:0;transition:opacity .35s;will-change:transform}
+#face b{display:inline-block;font-weight:400;transform-origin:50% 70%;transition:transform .45s cubic-bezier(.2,.8,.2,1);will-change:transform}
+#face{transition:opacity .35s,font-size .45s cubic-bezier(.2,.8,.2,1)}
+#face.watch{font-size:72px;filter:drop-shadow(0 0 18px rgba(59,130,246,.55)) drop-shadow(0 6px 14px rgba(0,0,0,.55))}
+/* click-on-empty-space reaction burst */
+#burst{position:fixed;inset:0;z-index:9998;pointer-events:none;overflow:hidden}
+#burst i{position:absolute;left:0;top:0;font-style:normal;line-height:1;user-select:none;will-change:transform,opacity;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.45))}
+#face.idle b{animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{50%{translate:0 -2px;scale:1.04}}
+.cur-on #glow,.cur-on #face{opacity:1}
+@media (hover:none),(pointer:coarse){#glow,#face,#burst{display:none}}
+
+@media (max-width:760px){
+  .nav .wrap{height:60px}
+  .brand{font-size:14px;gap:8px}
+  .links{gap:5px;font-size:12px}
+  .links a{padding:6px 10px}
+  .links .ab{display:none}
+  .statics{padding-block:80px 24px}
+  .grid{columns:2;column-gap:10px}.card{margin-bottom:10px;border-radius:10px}
+  .hero{min-height:auto;padding-block:72px 48px}
+  .lede{margin-top:28px}
+  .reel{padding-block:8px 80px}
+  .frame{border-radius:12px}
+  .about{grid-template-columns:1fr;gap:20px;padding-block:80px}
+  .contact{padding-block:24px 88px}
+  footer .wrap{height:auto;padding-top:24px;padding-bottom:24px;flex-direction:column;gap:6px;align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}.track{animation:none}html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><i></i>Onur Eren Savcı</a>
+    <nav class="links" aria-label="Main">
+      <a href="#showreel">Showreel</a>
+      <a href="#statics">Statics</a>
+      <a class="ab" href="#about">About</a>
+      <a class="cta" href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <h1 class="rv">Onur Eren Savcı<span class="role"><em>Marketing</em> Artist</span></h1>
+    <p class="lede rv" style="--d:.2s"><strong>UA videos, playable ads and statics</strong> for mobile games. Based in Istanbul.</p>
+  </section>
+
+  <section class="reel wrap" id="showreel" aria-labelledby="reel-t">
+    <div class="head rv"><h2 class="label" id="reel-t">/ Showreel</h2></div>
+    <div class="frame rv" style="--d:.1s">
+      <iframe src="https://www.youtube-nocookie.com/embed/zPc8RC-bSX4?rel=0&amp;enablejsapi=1" id="reelfr" title="Onur Eren Savcı — Showreel" loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track" id="track"><span>UA Video</span><span>Playable Ads</span><span>Statics</span><span>Motion</span><span>After Effects</span><span>Creative Testing</span><span>Store Assets</span><span>End Cards</span></div>
+  </div>
+
+  <section class="statics wrap" id="statics" aria-labelledby="st-t">
+    <div class="head rv"><h2 class="label" id="st-t">/ Statics</h2></div>
+    <div class="grid">
+      <!-- swap a placeholder for real work: <div class="card tall"><img src="..." alt="..."></div> -->
+      <div class="card tall rv" style="--d:0.00s"><em>9:16</em><span>Static 01</span></div>
+      <div class="card sq rv" style="--d:0.06s"><em>1:1</em><span>Static 02</span></div>
+      <div class="card pt rv" style="--d:0.12s"><em>4:5</em><span>Static 03</span></div>
+      <div class="card tall rv" style="--d:0.18s"><em>9:16</em><span>Static 04</span></div>
+      <div class="card sq rv" style="--d:0.00s"><em>1:1</em><span>Static 05</span></div>
+      <div class="card tall rv" style="--d:0.06s"><em>9:16</em><span>Static 06</span></div>
+      <div class="card pt rv" style="--d:0.12s"><em>4:5</em><span>Static 07</span></div>
+      <div class="card sq rv" style="--d:0.18s"><em>1:1</em><span>Static 08</span></div>
+    </div>
+  </section>
+
+  <section class="about wrap" id="about">
+    <div class="label rv">/ About</div>
+    <div>
+      <p class="rv">I make marketing creative for mobile games <span>— ads that hook in the first second, playables that feel like the game, and statics that hold the scroll.</span></p>
+      <div class="facts rv" style="--d:.1s">
+        <span class="pill">Marketing Artist</span><span class="pill">Mobile games</span><span class="pill">Istanbul, TR</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact wrap" id="contact">
+    <div class="label rv">/ Let’s talk</div>
+    <h2 class="rv" style="--d:.06s">Let’s make your<br>next ad <span>move.</span></h2>
+    <div class="row rv" style="--d:.14s">
+      <a class="mail" href="mailto:onurerensavci@gmail.com">onurerensavci@gmail.com <span aria-hidden="true">↗</span></a>
+      <button class="pill copy" id="copy" type="button">Copy email</button>
+    </div>
+    <div class="row rv" style="--d:.2s;margin-top:14px">
+      <a class="pill" href="https://www.linkedin.com/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="pill" href="https://www.behance.net/" target="_blank" rel="noopener">Behance ↗</a>
+      <a class="pill" href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram ↗</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>© 2026 Onur Eren Savcı</span><a href="#top">Back to top ↑</a></div>
+</footer>
+
+<div id="glow" aria-hidden="true"></div>
+<div id="face" aria-hidden="true"><b>🙂</b></div>
+<div id="burst" aria-hidden="true"></div>
+
+<script>
+document.documentElement.classList.add("js");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* reveal on scroll */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), {rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll(".rv").forEach(el => io.observe(el));
+
+/* nav border */
+const nav = document.getElementById("nav");
+addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 8), {passive:true});
+
+/* seamless marquee */
+const track = document.getElementById("track"); track.innerHTML += track.innerHTML;
+
+/* copy email */
+const copy = document.getElementById("copy");
+copy.addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText("onurerensavci@gmail.com"); copy.textContent = "Copied ✓"; }
+  catch { copy.textContent = "onurerensavci@gmail.com"; }
+  setTimeout(() => copy.textContent = "Copy email", 1800);
+});
+
+/* cursor buddy: lag-follow smiley that reacts to context (fine pointers only)
+   states: watch (parks beside the showreel and looks at it) > look (leans toward hovered static)
+           > curious (tilts near links/buttons) > idle (breathes, dozes) > default (follows + wink blink) */
+(() => {
+  if (!matchMedia("(hover:hover) and (pointer:fine)").matches) return;
+  const root = document.documentElement, glow = document.getElementById("glow"),
+        face = document.getElementById("face"), em = face.firstElementChild,
+        frame = document.querySelector(".frame"), ifr = document.getElementById("reelfr");
+  const S = 26, SW = 72; /* glyph size (default / watching the reel) */
+  let mx = -100, my = -100, fx = -100, fy = -100, gx = -100, gy = -100, seen = false, lastMove = performance.now();
+  let overReel = false, playing = false, focusedReel = false, card = null, near = null, winking = false;
+
+  addEventListener("pointermove", e => {
+    if (e.pointerType !== "mouse") return;
+    mx = e.clientX; my = e.clientY; lastMove = performance.now();
+    if (!seen) { fx = gx = mx; fy = gy = my; seen = true; }
+    root.classList.add("cur-on");
+    const t = e.target instanceof Element ? e.target : null;
+    card = t && t.closest(".card");
+    near = card ? null : nearest(mx, my);
+  }, {passive:true});
+  document.addEventListener("mouseleave", () => { if (!overReel && !focusedReel) root.classList.remove("cur-on"); });
+
+  /* reel: hover (pointer enters the iframe), focus (user clicked into the player), YouTube state via postMessage */
+  frame.addEventListener("mouseenter", () => { overReel = true; root.classList.add("cur-on"); });
+  frame.addEventListener("mouseleave", () => { overReel = false; });
+  addEventListener("blur", () => setTimeout(() => {
+    focusedReel = document.activeElement === ifr;
+    if (!focusedReel) root.classList.remove("cur-on");
+  }, 0));
+  addEventListener("focus", () => { focusedReel = false; });
+  ifr.addEventListener("load", () => { try { ifr.contentWindow.postMessage(JSON.stringify({event:"listening",id:"reel",channel:"widget"}), "*"); } catch {} });
+  addEventListener("message", e => {
+    if (!/youtube(-nocookie)?\.com$/.test(new URL(e.origin || "http://x").hostname)) return;
+    try { const d = typeof e.data === "string" ? JSON.parse(e.data) : e.data, st = d && d.info && d.info.playerState;
+      if (typeof st === "number") playing = st === 1 || st === 3; } catch {}
+  });
+
+  /* interactive elements for the curiosity tilt (within 90px of the cursor) */
+  const hot = [...document.querySelectorAll("a, button")];
+  function nearest(x, y){
+    let best = null, bd = 90;
+    for (const el of hot) {
+      const r = el.getBoundingClientRect(); if (!r.width) continue;
+      const dx = Math.max(r.left - x, 0, x - r.right), dy = Math.max(r.top - y, 0, y - r.bottom), d = Math.hypot(dx, dy);
+      if (d < bd) { bd = d; best = el; }
+    }
+    return best;
+  }
+
+  /* wink blink: 🙂 → 😉 for a beat, every 2.5–5.5s (only in the default state) */
+  let glyph = "🙂";
+  (function blink(){
+    setTimeout(() => {
+      if (glyph === "🙂") { winking = true; em.textContent = "😉"; }
+      setTimeout(() => { winking = false; em.textContent = glyph; blink(); }, 260);
+    }, 2500 + Math.random()*3000);
+  })();
+  function setGlyph(g){ if (g !== glyph) { glyph = g; if (!winking) em.textContent = g; } }
+
+  const k = reduce ? 1 : 0.12, kg = reduce ? 1 : 0.08;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  (function tick(){
+    const now = performance.now(), idleFor = now - lastMove;
+    const r = frame.getBoundingClientRect();
+    const reelVisible = r.bottom > innerHeight*0.25 && r.top < innerHeight*0.75;
+    const watching = reelVisible && (overReel || focusedReel || playing);
+    let tx = mx + 22, ty = my + 22, rot = 0, lx = 0, ly = 0, flip = 1, state = "default";
+
+    if (watching) {
+      state = "watch";
+      /* perch big on the player's top-right corner (straddling the edge, away from the bottom controls) */
+      tx = clamp(r.right - SW*0.62, 8, innerWidth - SW - 8);
+      ty = clamp(r.top - SW*0.42, 70, innerHeight - SW - 20);
+      flip = 1; rot = -10; lx = -3; ly = 2;
+      setGlyph("👀");
+    } else if (card) {
+      state = "look";
+      const c = card.getBoundingClientRect(), cx = c.left + c.width/2, cy = c.top + c.height/2;
+      const dx = cx - (fx + S/2), dy = cy - (fy + S/2), a = Math.atan2(dy, dx), m = Math.min(1, Math.hypot(dx, dy)/160);
+      rot = clamp(dx/10, -16, 16); lx = Math.cos(a)*6*m; ly = Math.sin(a)*6*m;
+      setGlyph("🧐");
+    } else if (near) {
+      state = "curious";
+      const n = near.getBoundingClientRect(), dx = n.left + n.width/2 - (fx + S/2);
+      rot = dx < 0 ? -12 : 12; lx = clamp(dx/20, -4, 4);
+      setGlyph(near.matches(".mail, .cta, .copy") ? "😃" : "🤔");
+    } else if (idleFor > 9000) { state = "idle"; setGlyph("😴"); }
+    else if (idleFor > 4000) { state = "idle"; setGlyph("😌"); }
+    else setGlyph("🙂");
+
+    face.classList.toggle("watch", state === "watch");
+    face.classList.toggle("idle", state === "idle");
+    const ks = state === "watch" ? k*0.6 : k; /* softer settle beside the player */
+    fx += (tx - fx) * ks; fy += (ty - fy) * ks;
+    gx += (mx - gx) * kg; gy += (my - gy) * kg;
+    face.style.transform = `translate3d(${fx.toFixed(2)}px,${fy.toFixed(2)}px,0)`;
+    em.style.transform = `translate(${lx.toFixed(1)}px,${ly.toFixed(1)}px) rotate(${rot.toFixed(1)}deg) scaleX(${flip})${winking ? " scale(1.08)" : ""}`;
+    glow.style.opacity = state === "watch" ? "0" : "";
+    glow.style.transform = `translate3d(${gx.toFixed(1)}px,${gy.toFixed(1)}px,0)`;
+    requestAnimationFrame(tick);
+  })();
+})();
+
+/* tap/click on empty space → Instagram-style reaction burst rising from the point */
+(() => {
+  if (!matchMedia("(hover:hover) and (pointer:fine)").matches) return; /* mouse/trackpad only — off on touch */
+  const layer = document.getElementById("burst");
+  const skip = "a, button, input, textarea, select, label, summary, iframe, video, .card, .frame, .pill, [role=button], [onclick], [contenteditable]";
+  const pool = ["❤️","❤️","❤️","👍","👍","👍","😍","💙","✨","🔥"];
+  const pick = () => pool[Math.random()*pool.length|0];
+  let last = 0;
+  document.addEventListener("click", e => {
+    if (e.pointerType && e.pointerType !== "mouse") return; /* hybrid devices: ignore touch/pen taps */
+    const t = e.target instanceof Element ? e.target : null;
+    if (!t || t.closest(skip)) return;
+    if (String(getSelection && getSelection()).length) return;        /* don't fire while selecting text */
+    const now = performance.now(); if (now - last < 90) return; last = now; /* gentle rate limit */
+    if (layer.childElementCount > 60) return;
+    const n = reduce ? 1 : 6 + (Math.random()*3|0);
+    for (let i = 0; i < n; i++) {
+      const el = document.createElement("i"); el.textContent = i === 0 ? (Math.random() < .5 ? "❤️" : "👍") : pick();
+      const size = (i === 0 ? 40 : 20 + Math.random()*18) | 0;
+      el.style.fontSize = size + "px";
+      layer.appendChild(el);
+      const x0 = e.clientX - size/2, y0 = e.clientY - size/2;
+      if (reduce) {
+        el.animate([{transform:`translate(${x0}px,${y0}px)`,opacity:0},{opacity:1,offset:.3},{transform:`translate(${x0}px,${y0}px)`,opacity:0}],
+          {duration:900,easing:"ease-out"}).onfinish = () => el.remove();
+        continue;
+      }
+      const ang = (-90 + (Math.random()*2-1)*55) * Math.PI/180, dist = 90 + Math.random()*130;
+      const dx = Math.cos(ang)*dist*.7, dy = Math.sin(ang)*dist - 40, sway = (Math.random()*2-1)*28;
+      const r0 = (Math.random()*2-1)*20, r1 = r0 + (Math.random()*2-1)*35;
+      const T = (x, y, s, r) => `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${s}) rotate(${r.toFixed(1)}deg)`;
+      el.animate([
+        {transform:T(x0, y0, .2, r0), opacity:0},
+        {transform:T(x0+dx*.25, y0+dy*.2, 1.25, r0), opacity:1, offset:.14},
+        {transform:T(x0+dx*.55+sway, y0+dy*.55, 1, (r0+r1)/2), opacity:1, offset:.5},
+        {transform:T(x0+dx-sway*.5, y0+dy, .85, r1), opacity:0}
+      ], {duration:1100 + Math.random()*700, delay:i ? Math.random()*140 : 0, easing:"cubic-bezier(.2,.7,.3,1)", fill:"backwards"})
+        .onfinish = () => el.remove();
+    }
+  });
+})();
+</script>
+</body>
+</html>
