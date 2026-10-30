@@ -49,13 +49,13 @@ a{color:inherit;text-decoration:none}
 
 /* hero */
 .hero{min-height:auto;display:flex;flex-direction:column;justify-content:flex-end;padding-block:80px 48px}
-h1{font-weight:900;font-size:clamp(52px,10.4vw,156px);line-height:.9;letter-spacing:-.028em;margin-left:-.02em;
-  transition:color .35s ease, letter-spacing .35s ease}
-h1:hover{color:#c7d7ff}
-h1 .role{display:block;color:var(--ink);font-weight:600;letter-spacing:-.02em;
+h1{font-weight:400;font-size:clamp(36px,5.6vw,72px);line-height:1.15;letter-spacing:-.02em;margin-left:-.01em;
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.35em .55em;
   transition:color .35s ease}
-h1:hover .role,h1:hover .role em{color:#9db7ff}
-h1 .role em{font-style:normal;color:var(--ink);transition:color .35s ease}
+h1 strong{font-weight:800;color:var(--ink);transition:color .35s ease}
+h1 .role{font-weight:400;color:var(--mute);letter-spacing:-.015em;transition:color .35s ease}
+h1:hover strong{color:#c7d7ff}
+h1:hover .role{color:#9db7ff}
 .lede{margin-top:32px;max-width:30ch;font-size:clamp(17px,1.5vw,21px);color:var(--mute);line-height:1.45}
 .lede strong{color:var(--ink);font-weight:500}
 
@@ -184,7 +184,7 @@ html:not(.js) .rv{opacity:1;transform:none}
 
 <main id="top">
   <section class="hero wrap">
-    <h1 class="rv">Onur Eren Savcı<span class="role"><em>Marketing</em> Artist</span></h1>
+    <h1 class="rv"><strong>Onur Eren Savcı</strong> <span class="role">Marketing Artist</span></h1>
     <p class="lede rv" style="--d:.2s"><strong>UA videos, playable ads and statics</strong> for mobile games. Based in Istanbul.</p>
   </section>
 
