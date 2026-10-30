@@ -49,7 +49,9 @@ a{color:inherit;text-decoration:none}
 
 /* hero */
 .hero{min-height:auto;display:flex;flex-direction:column;justify-content:flex-end;padding-block:80px 48px}
-h1{font-weight:400;font-size:clamp(36px,5.6vw,72px);line-height:1.15;letter-spacing:-.02em;margin-left:-.01em;
+.hero.wrap{max-width:min(1760px,94vw)}
+@media (min-width:1800px){.hero.wrap{max-width:min(2000px,90vw)}}
+h1{font-weight:400;font-size:clamp(36px,5.6vw,72px);line-height:1.15;letter-spacing:-.02em;margin-left:0;
   display:flex;flex-wrap:wrap;align-items:baseline;gap:.35em .55em;
   transition:color .35s ease}
 h1 strong{font-weight:800;color:var(--ink);transition:color .35s ease}
