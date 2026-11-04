@@ -90,9 +90,9 @@ h1:hover .role{color:#9db7ff}
 .card:hover{transform:translateY(-4px);box-shadow:0 0 0 1px rgba(245,241,232,.22),0 30px 60px -30px rgba(59,130,246,.45)}
 .card.sq{aspect-ratio:1/1}.card.tall{aspect-ratio:9/16}.card.pt{aspect-ratio:4/5}
 .card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.card::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 50% at 30% 20%,rgba(59,130,246,.12),transparent 70%)}
-.card span{position:absolute;left:14px;bottom:12px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.card em{position:absolute;right:14px;top:12px;font-style:normal;font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.06em}
+.card::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,.45),transparent 45%),radial-gradient(70% 50% at 30% 20%,rgba(59,130,246,.08),transparent 70%);pointer-events:none}
+.card span{position:absolute;left:14px;bottom:12px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.7)}
+.card em{position:absolute;right:14px;top:12px;z-index:2;font-style:normal;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7);letter-spacing:.06em;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 
 /* about */
 .about{padding-block:120px;display:grid;grid-template-columns:1fr 2fr;gap:48px}
@@ -211,7 +211,7 @@ html:not(.js) .rv{opacity:1;transform:none}
     <div class="head rv"><h2 class="label" id="st-t">/ Statics</h2></div>
     <div class="grid">
       <!-- swap a placeholder for real work: <div class="card tall"><img src="..." alt="..."></div> -->
-      <div class="card tall rv" style="--d:0.00s"><em>9:16</em><span>Static 01</span></div>
+      <div class="card sq rv" style="--d:0.00s"><img src="assets/soda-match.jpg" alt="Soda Match — playable static" loading="lazy"><em>1:1</em><span>Soda Match</span></div>
       <div class="card sq rv" style="--d:0.06s"><em>1:1</em><span>Static 02</span></div>
       <div class="card pt rv" style="--d:0.12s"><em>4:5</em><span>Static 03</span></div>
       <div class="card tall rv" style="--d:0.18s"><em>9:16</em><span>Static 04</span></div>
