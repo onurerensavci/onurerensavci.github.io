@@ -90,7 +90,9 @@ h1:hover .role{color:#9db7ff}
 .statics-track{display:flex;gap:14px;width:max-content;padding:4px 0;
   animation:statics-mq var(--mq-dur,140s) linear infinite;will-change:transform}
 .statics-track.rev{animation-name:statics-mq-rev;animation-direction:normal}
+@media (hover:hover) and (pointer:fine){
 .statics-mq:hover .statics-track,.statics:hover .statics-track{animation-play-state:paused}
+}
 @keyframes statics-mq{to{transform:translateX(-50%)}}
 @keyframes statics-mq-rev{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 .card{position:relative;flex:0 0 auto;width:clamp(220px,22vw,280px);aspect-ratio:1/1;border-radius:16px;overflow:hidden;
