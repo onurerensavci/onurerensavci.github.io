@@ -343,7 +343,6 @@ document.querySelectorAll("[data-statics-track]").forEach(t => { t.innerHTML += 
       }
     }
   };
-  const apply = () => setRate(touchSlow || mq.matches(":hover") ? 0.5 : 1);
   /* mouse: hover in/out */
   mq.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") setRate(0.5); });
   mq.addEventListener("pointerleave", e => { if (e.pointerType === "mouse" && !touchSlow) setRate(1); });
