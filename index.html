@@ -81,18 +81,20 @@ h1:hover .role{color:#9db7ff}
 .track span:nth-child(odd){color:var(--mute)}
 @keyframes mq{to{transform:translateX(-50%)}}
 
-/* statics */
-.statics{padding-block:120px 40px}
-.statics .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px}
-.grid{columns:4 220px;column-gap:16px}
-.card{break-inside:avoid;margin-bottom:16px;position:relative;border-radius:14px;overflow:hidden;
+/* statics — continuous RTL image marquee */
+.statics{padding-block:120px 48px;overflow:hidden}
+.statics .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px}
+.statics-mq{overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);position:relative;
+  mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.statics-track{display:flex;gap:16px;width:max-content;padding:6px 0 10px;
+  animation:statics-mq 64s linear infinite;will-change:transform}
+.statics-mq:hover .statics-track{animation-play-state:paused}
+@keyframes statics-mq{to{transform:translateX(-50%)}}
+.card{position:relative;flex:0 0 auto;width:clamp(168px,18vw,220px);aspect-ratio:1/1;border-radius:14px;overflow:hidden;
   background:linear-gradient(160deg,#1b1b21,#121216);box-shadow:0 0 0 1px var(--line);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
-.card:hover{transform:translateY(-4px);box-shadow:0 0 0 1px rgba(245,241,232,.22),0 30px 60px -30px rgba(59,130,246,.45)}
-.card.sq{aspect-ratio:1/1}.card.tall{aspect-ratio:9/16}.card.pt{aspect-ratio:4/5}
-.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.card::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,.45),transparent 45%),radial-gradient(70% 50% at 30% 20%,rgba(59,130,246,.08),transparent 70%);pointer-events:none}
-.card span{position:absolute;left:14px;bottom:12px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.7)}
-.card em{position:absolute;right:14px;top:12px;z-index:2;font-style:normal;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.7);letter-spacing:.06em;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 0 0 1px rgba(245,241,232,.22),0 30px 60px -30px rgba(59,130,246,.45)}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
 /* about */
 .about{padding-block:120px;display:grid;grid-template-columns:1fr 2fr;gap:48px}
@@ -160,8 +162,9 @@ html:not(.js) .rv{opacity:1;transform:none}
   .links{gap:5px;font-size:12px}
   .links a{padding:6px 10px}
   .links .ab{display:none}
-  .statics{padding-block:80px 24px}
-  .grid{columns:2;column-gap:10px}.card{margin-bottom:10px;border-radius:10px}
+  .statics{padding-block:80px 28px}
+  .statics-track{gap:10px;animation-duration:48s}
+  .card{width:clamp(140px,38vw,180px);border-radius:10px}
   .hero{padding-block:56px 28px}
   .lede{margin-top:22px}
   .reel{padding-block:8px 28px}
@@ -171,7 +174,7 @@ html:not(.js) .rv{opacity:1;transform:none}
   footer .wrap{height:auto;padding-top:24px;padding-bottom:24px;flex-direction:column;gap:6px;align-items:flex-start}
 }
 @media (prefers-reduced-motion:reduce){
-  .rv{opacity:1;transform:none;transition:none}.track{animation:none}html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}.track,.statics-track{animation:none}html{scroll-behavior:auto}
 }
 </style>
 </head>
@@ -207,22 +210,31 @@ html:not(.js) .rv{opacity:1;transform:none}
     <div class="track" id="track"><span>UA Video</span><span>Playable Ads</span><span>Statics</span><span>Motion</span><span>After Effects</span><span>Blender</span><span>Cinema 4D</span><span>Redshift</span><span>Creative Testing</span><span>Store Assets</span><span>End Cards</span></div>
   </div>
 
-  <section class="statics wrap" id="statics" aria-labelledby="st-t">
-    <div class="head rv"><h2 class="label" id="st-t">/ Statics</h2></div>
-    <div class="grid">
-      <!-- swap a placeholder for real work: <div class="card tall"><img src="..." alt="..."></div> -->
-      <div class="card sq rv" style="--d:0.00s"><img src="assets/soda-match.jpg" alt="Soda Match — game static" loading="lazy"><em>1:1</em><span>Soda Match</span></div>
-      <div class="card sq rv" style="--d:0.06s"><img src="assets/same-couch.jpg" alt="Same Couch — game static" loading="lazy"><em>1:1</em><span>Same Couch</span></div>
-      <div class="card sq rv" style="--d:0.12s"><img src="assets/which-player.jpg" alt="Which Player — game static" loading="lazy"><em>1:1</em><span>Which Player</span></div>
-      <div class="card sq rv" style="--d:0.18s"><img src="assets/arrows-rush.jpg" alt="Arrows Rush — game static" loading="lazy"><em>1:1</em><span>Arrows Rush</span></div>
-      <div class="card sq rv" style="--d:0.00s"><img src="assets/fruit-slice.jpg" alt="Fruit Slice — game static" loading="lazy"><em>1:1</em><span>Fruit Slice</span></div>
-      <div class="card sq rv" style="--d:0.06s"><img src="assets/sunday-mood.jpg" alt="Sunday Mood — game static" loading="lazy"><em>1:1</em><span>Sunday Mood</span></div>
-      <div class="card sq rv" style="--d:0.12s"><img src="assets/spin-and-choose.jpg" alt="Spin & Choose — game static" loading="lazy"><em>1:1</em><span>Spin & Choose</span></div>
-      <div class="card sq rv" style="--d:0.18s"><img src="assets/messi-spot.jpg" alt="Messi Spot — game static" loading="lazy"><em>1:1</em><span>Messi Spot</span></div>
-      <div class="card sq rv" style="--d:0.00s"><img src="assets/donutday-1.jpg" alt="Donut Day — game static" loading="lazy"><em>1:1</em><span>Donut Day</span></div>
-      <div class="card sq rv" style="--d:0.06s"><img src="assets/pick-your-reward-2.jpg" alt="Pick Your Reward — game static" loading="lazy"><em>1:1</em><span>Pick Your Reward</span></div>
-      <div class="card sq rv" style="--d:0.12s"><img src="assets/grandma-doesnt-lose.jpg" alt="Grandma Doesn&#39;t Lose — game static" loading="lazy"><em>1:1</em><span>Grandma Doesn&#39;t Lose</span></div>
-      <div class="card sq rv" style="--d:0.18s"><img src="assets/choose-holiday-destination2.jpg" alt="Choose Holiday Destination — game static" loading="lazy"><em>1:1</em><span>Choose Holiday Destination</span></div>
+  <section class="statics" id="statics" aria-labelledby="st-t">
+    <div class="wrap">
+      <div class="head rv"><h2 class="label" id="st-t">/ Statics</h2></div>
+    </div>
+    <div class="statics-mq rv" style="--d:.08s" aria-label="Statics showcase">
+      <div class="statics-track" id="statics-track">
+      <div class="card"><img src="assets/soda-match.jpg" alt="Soda Match — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/same-couch.jpg" alt="Same Couch — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/which-player.jpg" alt="Which Player — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/arrows-rush.jpg" alt="Arrows Rush — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/fruit-slice.jpg" alt="Fruit Slice — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/sunday-mood.jpg" alt="Sunday Mood — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/spin-and-choose.jpg" alt="Spin & Choose — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/messi-spot.jpg" alt="Messi Spot — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/donutday-1.jpg" alt="Donut Day — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/pick-your-reward-2.jpg" alt="Pick Your Reward — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/grandma-doesnt-lose.jpg" alt="Grandma Doesn't Lose — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/choose-holiday-destination2.jpg" alt="Choose Holiday Destination — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/can-smash.jpg" alt="Can Smash — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/just-one-round.jpg" alt="Just One Round — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/pick-your-game.jpg" alt="Pick Your Game — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/pizza-vs-burger.jpg" alt="Pizza vs Burger — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/choose-your-power.jpg" alt="Choose Your Power — game static" loading="lazy" decoding="async"></div>
+      <div class="card"><img src="assets/winner-era.jpg" alt="Winner Era — game static" loading="lazy" decoding="async"></div>
+      </div>
     </div>
   </section>
 
@@ -272,8 +284,10 @@ document.querySelectorAll(".rv").forEach(el => io.observe(el));
 const nav = document.getElementById("nav");
 addEventListener("scroll", () => nav.classList.toggle("scrolled", scrollY > 8), {passive:true});
 
-/* seamless marquee */
+/* seamless marquees */
 const track = document.getElementById("track"); track.innerHTML += track.innerHTML;
+const staticsTrack = document.getElementById("statics-track");
+if (staticsTrack) staticsTrack.innerHTML += staticsTrack.innerHTML;
 
 /* copy email */
 const copy = document.getElementById("copy");
