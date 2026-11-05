@@ -92,10 +92,28 @@ h1:hover .role{color:#9db7ff}
 .statics-track.rev{animation-name:statics-mq-rev;animation-direction:normal}
 @keyframes statics-mq{to{transform:translateX(-50%)}}
 @keyframes statics-mq-rev{from{transform:translateX(-50%)}to{transform:translateX(0)}}
-.card{position:relative;flex:0 0 auto;width:clamp(220px,22vw,280px);aspect-ratio:1/1;border-radius:16px;overflow:hidden;
+.card{position:relative;flex:0 0 auto;width:clamp(220px,22vw,280px);aspect-ratio:1/1;border-radius:16px;overflow:hidden;cursor:pointer;
   background:linear-gradient(160deg,#1b1b21,#121216);box-shadow:0 0 0 1px var(--line);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s}
 .card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 0 0 1px rgba(245,241,232,.22),0 30px 60px -30px rgba(59,130,246,.45)}
-.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.card:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:10050;display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+  background:rgba(8,8,10,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,visibility .28s}
+.lb.open{opacity:1;visibility:visible;pointer-events:auto}
+.lb-fig{margin:0;max-width:min(920px,100%);max-height:min(90vh,100%);display:flex;align-items:center;justify-content:center}
+.lb-fig img{display:block;max-width:100%;max-height:min(88vh,100%);width:auto;height:auto;border-radius:16px;
+  box-shadow:0 0 0 1px rgba(245,241,232,.12),0 40px 100px -30px rgba(0,0,0,.85);transform:scale(.96);opacity:0;
+  transition:transform .32s cubic-bezier(.2,.7,.2,1),opacity .32s ease}
+.lb.open .lb-fig img{transform:none;opacity:1}
+.lb-close{position:fixed;top:max(14px,env(safe-area-inset-top));right:max(14px,env(safe-area-inset-right));z-index:10051;
+  width:44px;height:44px;border:1px solid rgba(245,241,232,.18);border-radius:999px;background:rgba(20,20,24,.85);
+  color:var(--ink);font:inherit;font-size:22px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  transition:background .2s,border-color .2s,transform .2s}
+.lb-close:hover{background:var(--ink);color:var(--bg);border-color:var(--ink);transform:scale(1.04)}
+body.lb-on{overflow:hidden}
 
 /* about */
 .about{padding-block:120px;display:grid;grid-template-columns:1fr 2fr;gap:48px}
@@ -314,6 +332,11 @@ html:not(.js) .rv{opacity:1;transform:none}
 <div id="burst" aria-hidden="true"></div>
 <div id="finale-layer" aria-hidden="true"></div>
 
+<div class="lb" id="lb" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Static preview">
+  <button class="lb-close" id="lb-close" type="button" aria-label="Close preview">×</button>
+  <figure class="lb-fig"><img id="lb-img" alt=""></figure>
+</div>
+
 <script>
 document.documentElement.classList.add("js");
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -334,7 +357,7 @@ document.querySelectorAll("[data-statics-track]").forEach(t => { t.innerHTML += 
   const mq = document.querySelector(".statics-mq");
   if (!mq) return;
   const tracks = [...mq.querySelectorAll("[data-statics-track]")];
-  let touchSlow = false;
+  let touchSlow = false, mouseIn = false;
   const setRate = (rate) => {
     for (const t of tracks) {
       for (const a of t.getAnimations()) {
@@ -343,14 +366,69 @@ document.querySelectorAll("[data-statics-track]").forEach(t => { t.innerHTML += 
       }
     }
   };
-  /* mouse: hover in/out */
-  mq.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") setRate(0.5); });
-  mq.addEventListener("pointerleave", e => { if (e.pointerType === "mouse" && !touchSlow) setRate(1); });
-  /* touch: slow while finger down, restore on lift */
-  mq.addEventListener("touchstart", () => { touchSlow = true; setRate(0.5); }, {passive:true});
-  const endTouch = () => { touchSlow = false; setRate(1); };
+  const syncRate = () => setRate((mouseIn || touchSlow) && !document.body.classList.contains("lb-on") ? 0.5 : 1);
+  mq.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") { mouseIn = true; syncRate(); } });
+  mq.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") { mouseIn = false; syncRate(); } });
+  mq.addEventListener("touchstart", () => { touchSlow = true; syncRate(); }, {passive:true});
+  const endTouch = () => { touchSlow = false; syncRate(); };
   mq.addEventListener("touchend", endTouch, {passive:true});
   mq.addEventListener("touchcancel", endTouch, {passive:true});
+  /* expose for lightbox open/close */
+  window.__staticsSyncRate = syncRate;
+  window.__staticsClearTouch = () => { touchSlow = false; syncRate(); };
+})();
+
+/* statics lightbox — click/tap card to preview */
+(() => {
+  const mq = document.querySelector(".statics-mq");
+  const lb = document.getElementById("lb");
+  const img = document.getElementById("lb-img");
+  const closeBtn = document.getElementById("lb-close");
+  if (!mq || !lb || !img) return;
+
+  /* keyboard affordance after track duplication */
+  mq.querySelectorAll(".card").forEach(c => { c.tabIndex = 0; c.setAttribute("role", "button"); });
+
+  function open(src, alt){
+    img.src = src;
+    img.alt = alt || "";
+    lb.classList.add("open");
+    lb.setAttribute("aria-hidden", "false");
+    document.body.classList.add("lb-on");
+    if (window.__staticsClearTouch) window.__staticsClearTouch();
+    else if (window.__staticsSyncRate) window.__staticsSyncRate();
+    closeBtn.focus({preventScroll:true});
+  }
+  function close(){
+    if (!lb.classList.contains("open")) return;
+    lb.classList.remove("open");
+    lb.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("lb-on");
+    img.removeAttribute("src");
+    img.alt = "";
+    if (window.__staticsSyncRate) window.__staticsSyncRate();
+  }
+
+  mq.addEventListener("click", e => {
+    const card = e.target.closest(".card");
+    if (!card || !mq.contains(card)) return;
+    const pic = card.querySelector("img");
+    if (!pic || !pic.src) return;
+    e.preventDefault();
+    open(pic.currentSrc || pic.src, pic.alt);
+  });
+  mq.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const card = e.target.closest(".card");
+    if (!card) return;
+    e.preventDefault();
+    const pic = card.querySelector("img");
+    if (pic) open(pic.currentSrc || pic.src, pic.alt);
+  });
+
+  closeBtn.addEventListener("click", e => { e.stopPropagation(); close(); });
+  lb.addEventListener("click", e => { if (e.target === lb) close(); });
+  addEventListener("keydown", e => { if (e.key === "Escape") close(); });
 })();
 
 /* copy email */
@@ -479,7 +557,7 @@ copy.addEventListener("click", async () => {
   if (!matchMedia("(hover:hover) and (pointer:fine)").matches) return;
   const layer = document.getElementById("burst");
   const finLayer = document.getElementById("finale-layer");
-  const skip = "a, button, input, textarea, select, label, summary, iframe, video, .card, .frame, .pill, [role=button], [onclick], [contenteditable]";
+  const skip = "a, button, input, textarea, select, label, summary, iframe, video, .card, .frame, .pill, .lb, [role=button], [onclick], [contenteditable]";
   const pool = ["❤️","❤️","👍","👍","😍","💙","✨","🔥"];
   const pick = () => pool[Math.random()*pool.length|0];
   const HOLD_MS = 1600;
