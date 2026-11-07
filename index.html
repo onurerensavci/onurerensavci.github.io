@@ -534,17 +534,18 @@ copy.addEventListener("click", async () => {
   })();
 })();
 
-/* mobile touch reactions: tap smile, deliberate hold twins, release micro-burst */
+/* mobile touch reactions: 4–5 different friendly emojis on each valid tap */
 (() => {
   const layer = document.getElementById("touch-reactions");
   const skip = "a,button,input,textarea,select,form,label,summary,iframe,video,audio,img,nav,.card,.statics-mq,.frame,.pill,.lb,[role=button],[onclick],[contenteditable]";
   const touches = new Set();
-  let gesture = null, holdTimer = 0, expiry = 0, lastTouch = -Infinity;
+  let gesture = null, expiry = 0, lastTouch = -Infinity;
+  const pool = ["🙂","😉","😎","😍","🥳","🤩","😄","👍","❤️","✨","🎉","💛"];
   const passive = {passive:true};
   const clearVisuals = () => { clearTimeout(expiry); layer.replaceChildren(); };
-  const cancel = () => { clearTimeout(holdTimer); gesture = null; clearVisuals(); };
+  const cancel = () => { gesture = null; clearVisuals(); };
   function glyph(text, x, y, dx = 0, dy = 0, duration = 650){
-    if (layer.childElementCount >= 4) return;
+    if (layer.childElementCount >= 5) return;
     const el = document.createElement("i");
     el.textContent = text;
     const px = Math.max(8, Math.min(innerWidth - 38, x - 13));
@@ -558,6 +559,7 @@ copy.addEventListener("click", async () => {
         {transform:`translate(${ex}px,${ey}px)`,opacity:0}],
         {duration,easing:"ease-out",fill:"forwards"});
     }
+    clearTimeout(expiry);
     expiry = setTimeout(clearVisuals, duration);
   }
   document.addEventListener("pointerdown", e => {
@@ -568,13 +570,7 @@ copy.addEventListener("click", async () => {
     if (touches.size !== 1 || e.isPrimary === false || document.hidden) return;
     const target = e.target instanceof Element ? e.target : null;
     if (!target || target.closest(skip) || String(getSelection()).length) return;
-    gesture = {id:e.pointerId,x:e.clientX,y:e.clientY,held:false};
-    holdTimer = setTimeout(() => {
-      if (!gesture || touches.size !== 1) return;
-      gesture.held = true;
-      glyph("😉",gesture.x - 42,gesture.y - 16,0,0,1200);
-      glyph("😎",gesture.x + 42,gesture.y - 16,0,0,1200);
-    },400);
+    gesture = {id:e.pointerId,x:e.clientX,y:e.clientY};
   },passive);
   document.addEventListener("pointermove", e => {
     if (gesture && e.pointerId === gesture.id && Math.hypot(e.clientX - gesture.x,e.clientY - gesture.y) > 10) cancel();
@@ -587,10 +583,19 @@ copy.addEventListener("click", async () => {
     const valid = Math.hypot(e.clientX - g.x,e.clientY - g.y) <= 10;
     cancel();
     if (!valid || touches.size) return;
-    if (g.held) {
-      glyph("👍",g.x - 17,g.y - 12,-18,-40,650);
-      glyph("❤️",g.x + 17,g.y - 12,18,-48,650);
-    } else glyph("🙂",g.x,g.y - 18,0,-12,450);
+    /* Sample without replacement: every tap has 4 or 5 distinct emojis. */
+    const choices = [...pool];
+    for (let i = choices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [choices[i],choices[j]] = [choices[j],choices[i]];
+    }
+    const count = 4 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < count; i++) {
+      const angle = -Math.PI + (i + 0.5) * Math.PI / count;
+      const radius = 26 + Math.random() * 10;
+      glyph(choices[i],e.clientX + Math.cos(angle) * radius,e.clientY + Math.sin(angle) * radius,
+        Math.cos(angle) * 18,Math.sin(angle) * 20 - 10,650);
+    }
   },passive);
   document.addEventListener("pointercancel", e => {
     if (e.pointerType !== "touch") return;
