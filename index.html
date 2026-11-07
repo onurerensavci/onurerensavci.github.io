@@ -115,6 +115,11 @@ h1:hover .role{color:#9db7ff}
 .lb-close:hover{background:var(--ink);color:var(--bg);border-color:var(--ink);transform:scale(1.04)}
 body.lb-on{overflow:hidden}
 
+/* transient touch reactions — never intercept page gestures */
+#touch-reactions{position:fixed;inset:0;z-index:10001;pointer-events:none;overflow:hidden;user-select:none}
+#touch-reactions i{position:absolute;left:0;top:0;font-style:normal;font-size:26px;line-height:1;pointer-events:none;
+  filter:drop-shadow(0 3px 6px rgba(0,0,0,.35))}
+
 /* about */
 .about{padding-block:120px;display:grid;grid-template-columns:1fr 2fr;gap:48px}
 .about p{font-size:clamp(22px,2.4vw,34px);line-height:1.25;letter-spacing:-.025em;font-weight:500;max-width:28ch}
@@ -305,6 +310,7 @@ html:not(.js) .rv{opacity:1;transform:none}
 
 <div id="glow" aria-hidden="true"></div>
 <div id="face" aria-hidden="true"><b>🙂</b></div>
+<div id="touch-reactions" aria-hidden="true"></div>
 <div id="burst" aria-hidden="true"></div>
 <div id="finale-layer" aria-hidden="true"></div>
 
@@ -528,6 +534,76 @@ copy.addEventListener("click", async () => {
   })();
 })();
 
+/* mobile touch reactions: tap smile, deliberate hold twins, release micro-burst */
+(() => {
+  const layer = document.getElementById("touch-reactions");
+  const skip = "a,button,input,textarea,select,form,label,summary,iframe,video,audio,img,nav,.card,.statics-mq,.frame,.pill,.lb,[role=button],[onclick],[contenteditable]";
+  const touches = new Set();
+  let gesture = null, holdTimer = 0, expiry = 0, lastTouch = -Infinity;
+  const passive = {passive:true};
+  const clearVisuals = () => { clearTimeout(expiry); layer.replaceChildren(); };
+  const cancel = () => { clearTimeout(holdTimer); gesture = null; clearVisuals(); };
+  function glyph(text, x, y, dx = 0, dy = 0, duration = 650){
+    if (layer.childElementCount >= 4) return;
+    const el = document.createElement("i");
+    el.textContent = text;
+    const px = Math.max(8, Math.min(innerWidth - 38, x - 13));
+    const py = Math.max(8, Math.min(innerHeight - 38, y - 13));
+    el.style.transform = `translate(${px}px,${py}px)`;
+    layer.appendChild(el);
+    if (!reduce && el.animate) {
+      const ex = Math.max(8, Math.min(innerWidth - 38, px + dx));
+      const ey = Math.max(8, Math.min(innerHeight - 38, py + dy));
+      el.animate([{transform:`translate(${px}px,${py}px)`,opacity:1},
+        {transform:`translate(${ex}px,${ey}px)`,opacity:0}],
+        {duration,easing:"ease-out",fill:"forwards"});
+    }
+    expiry = setTimeout(clearVisuals, duration);
+  }
+  document.addEventListener("pointerdown", e => {
+    if (e.pointerType !== "touch") return;
+    lastTouch = performance.now();
+    touches.add(e.pointerId);
+    cancel();
+    if (touches.size !== 1 || e.isPrimary === false || document.hidden) return;
+    const target = e.target instanceof Element ? e.target : null;
+    if (!target || target.closest(skip) || String(getSelection()).length) return;
+    gesture = {id:e.pointerId,x:e.clientX,y:e.clientY,held:false};
+    holdTimer = setTimeout(() => {
+      if (!gesture || touches.size !== 1) return;
+      gesture.held = true;
+      glyph("😉",gesture.x - 42,gesture.y - 16,0,0,1200);
+      glyph("😎",gesture.x + 42,gesture.y - 16,0,0,1200);
+    },400);
+  },passive);
+  document.addEventListener("pointermove", e => {
+    if (gesture && e.pointerId === gesture.id && Math.hypot(e.clientX - gesture.x,e.clientY - gesture.y) > 10) cancel();
+  },passive);
+  document.addEventListener("pointerup", e => {
+    if (e.pointerType !== "touch") return;
+    touches.delete(e.pointerId);
+    if (!gesture || e.pointerId !== gesture.id) return;
+    const g = gesture;
+    const valid = Math.hypot(e.clientX - g.x,e.clientY - g.y) <= 10;
+    cancel();
+    if (!valid || touches.size) return;
+    if (g.held) {
+      glyph("👍",g.x - 17,g.y - 12,-18,-40,650);
+      glyph("❤️",g.x + 17,g.y - 12,18,-48,650);
+    } else glyph("🙂",g.x,g.y - 18,0,-12,450);
+  },passive);
+  document.addEventListener("pointercancel", e => {
+    if (e.pointerType !== "touch") return;
+    touches.delete(e.pointerId); cancel();
+  },passive);
+  document.addEventListener("scroll",cancel,{capture:true,passive:true});
+  document.addEventListener("visibilitychange",() => { touches.clear(); cancel(); });
+  addEventListener("blur",() => { touches.clear(); cancel(); });
+  addEventListener("resize",cancel,passive);
+  /* Block only desktop emoji compatibility reactions, never native navigation/clicks. */
+  window.__recentEmojiTouch = () => performance.now() - lastTouch < 900;
+})();
+
 /* empty-space reactions: light click burst; hold = gentle spam then twin wink/sunglasses among the spray */
 (() => {
   if (!matchMedia("(hover:hover) and (pointer:fine)").matches) return;
@@ -541,6 +617,7 @@ copy.addEventListener("click", async () => {
   let holding = false, holdStart = 0, spamTimer = 0, finaleDone = false, px = 0, py = 0, suppressedClick = false;
 
   function okTarget(e){
+    if ((window.__recentEmojiTouch && window.__recentEmojiTouch()) || (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents)) return false;
     if (e.pointerType && e.pointerType !== "mouse") return false;
     const t = e.target instanceof Element ? e.target : null;
     if (!t || t.closest(skip)) return false;
