@@ -196,6 +196,12 @@ html:not(.js) .rv{opacity:1;transform:none}
   .frame{border-radius:12px}
   .about{grid-template-columns:1fr;gap:20px;padding-block:80px}
   .contact{padding-block:24px 88px}
+  .contact-actions{display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:8px;align-items:stretch}
+  .contact-actions .mail{min-width:0;justify-content:center;white-space:nowrap;
+    font-size:clamp(12px,3.4vw,14px);padding:12px 10px;gap:4px}
+  .contact-actions .copy{min-width:0;min-height:44px;padding:6px 4px;
+    font-size:12px;line-height:1.2;white-space:normal;text-align:center}
+
   footer .wrap{height:auto;padding-top:24px;padding-bottom:24px;flex-direction:column;gap:6px;align-items:flex-start}
 }
 @media (prefers-reduced-motion:reduce){
@@ -292,7 +298,7 @@ html:not(.js) .rv{opacity:1;transform:none}
   <section class="contact wrap" id="contact">
     <div class="label rv">/ Let’s talk</div>
     <h2 class="rv" style="--d:.06s">Let’s make your<br>next ad <span>move.</span></h2>
-    <div class="row rv" style="--d:.14s">
+    <div class="row contact-actions rv" style="--d:.14s">
       <a class="mail" href="mailto:onurerensavci@gmail.com">onurerensavci@gmail.com <span aria-hidden="true">↗</span></a>
       <button class="pill copy" id="copy" type="button">Copy email</button>
     </div>
