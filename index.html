@@ -84,7 +84,7 @@ h1:hover .role{color:#9db7ff}
 /* statics — 3-row continuous image marquee */
 .statics{padding-block:120px 56px;overflow:hidden}
 .statics .head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:22px;flex-wrap:wrap}
-.statics-hint{display:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.statics-hint{font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.04em;text-transform:none;color:var(--dim);white-space:nowrap}
 .statics-mq{display:flex;flex-direction:column;gap:14px;overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);position:relative;
   mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
@@ -198,7 +198,6 @@ html:not(.js) .rv{opacity:1;transform:none}
   .statics-mq{gap:10px}
   .statics-track{gap:10px}
   .card{width:clamp(160px,42vw,200px);border-radius:12px}
-  .statics-hint{display:inline}
   .hero{padding-block:56px 28px}
   .lede{margin-top:22px}
   .reel{padding-block:8px 28px}
@@ -263,7 +262,7 @@ html:not(.js) .rv{opacity:1;transform:none}
 
   <section class="statics" id="statics" aria-labelledby="st-t">
     <div class="wrap">
-      <div class="head rv"><h2 class="label" id="st-t">/ Statics</h2><span class="statics-hint" aria-hidden="true">Tap to enlarge</span></div>
+      <div class="head rv"><h2 class="label" id="st-t">/ Statics <span class="statics-hint">(click to enlarge)</span></h2></div>
     </div>
     <div class="statics-mq rv" style="--d:.08s" aria-label="Statics showcase">
       <div class="statics-track" data-statics-track style="--mq-dur:140s">
