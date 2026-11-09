@@ -56,36 +56,33 @@ h1{font-weight:400;font-size:clamp(48px,8.2vw,118px);line-height:1.05;letter-spa
   position:relative;isolation:isolate}
 h1 strong{font-weight:800;color:var(--ink)}
 h1 .role{display:block;font-weight:400;font-size:.42em;line-height:1.15;letter-spacing:-.015em;color:var(--mute)}
-/* desktop holographic foil — localized near cursor (~145px), idle = solid cream/mute */
+/* desktop holographic foil — localized ~145px radial spotlight; idle = solid cream/mute */
 @media (hover:hover) and (pointer:fine){
   h1 strong,h1 .role{
     --hx:50%;--hy:50%;--hang:125deg;--hpow:0;--hsx:50%;--hsy:40%;--hr:145px;
     --fill:var(--ink);
     background-image:
-      radial-gradient(circle calc(var(--hr) * .55) at var(--hsx) var(--hsy),
-        rgba(255,255,255,calc(.6 * var(--hpow))) 0%,
-        rgba(255,255,255,calc(.15 * var(--hpow))) 45%,
-        transparent 70%),
+      radial-gradient(circle calc(var(--hr) * .48) at var(--hsx) var(--hsy),
+        rgba(255,255,255,calc(.75 * var(--hpow))) 0%,
+        rgba(255,255,255,calc(.18 * var(--hpow))) 40%,
+        transparent 68%),
       radial-gradient(circle var(--hr) at var(--hsx) var(--hsy),
-        #fff 0%,
-        rgba(255,255,255,.9) 22%,
-        rgba(255,255,255,.45) 48%,
-        rgba(255,255,255,.12) 68%,
-        transparent 78%),
-      conic-gradient(from var(--hang) at var(--hx) var(--hy),
-        rgba(255,120,200,calc(.95 * var(--hpow))) 0deg,
-        rgba(120,210,255,calc(.95 * var(--hpow))) 60deg,
-        rgba(170,130,255,calc(.95 * var(--hpow))) 120deg,
-        rgba(110,240,200,calc(.95 * var(--hpow))) 180deg,
-        rgba(255,210,110,calc(.95 * var(--hpow))) 240deg,
-        rgba(255,150,180,calc(.95 * var(--hpow))) 300deg,
-        rgba(255,120,200,calc(.95 * var(--hpow))) 360deg),
+        rgba(255,140,200,calc(.95 * var(--hpow))) 0%,
+        rgba(130,200,255,calc(.9 * var(--hpow))) 14%,
+        rgba(175,135,255,calc(.82 * var(--hpow))) 28%,
+        rgba(100,235,200,calc(.58 * var(--hpow))) 44%,
+        rgba(255,205,110,calc(.32 * var(--hpow))) 58%,
+        rgba(255,160,185,calc(.12 * var(--hpow))) 70%,
+        transparent 82%),
+      radial-gradient(circle calc(var(--hr) * .7) at var(--hsx) var(--hsy),
+        rgba(180,220,255,calc(.4 * var(--hpow))) 0%,
+        rgba(255,200,160,calc(.22 * var(--hpow))) 45%,
+        transparent 72%),
       linear-gradient(var(--fill), var(--fill));
-    background-blend-mode:soft-light,destination-in,normal,normal;
     -webkit-background-clip:text;background-clip:text;
     color:transparent;-webkit-text-fill-color:transparent;
-    filter:drop-shadow(0 0 .35px rgba(200,230,255,calc(.3 * var(--hpow))))
-           drop-shadow(0 0 .5px rgba(255,170,210,calc(.22 * var(--hpow))));
+    filter:drop-shadow(0 0 .35px rgba(200,230,255,calc(.28 * var(--hpow))))
+           drop-shadow(0 0 .5px rgba(255,170,210,calc(.2 * var(--hpow))));
   }
   h1 strong{--fill:var(--ink)}
   h1 .role{--fill:var(--mute)}
