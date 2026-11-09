@@ -62,63 +62,62 @@ h1 .role{display:block;font-weight:400;font-size:.42em;line-height:1.15;letter-s
     --hx:50%;--hy:50%;--hang:125deg;--hpow:0;--hsx:50%;--hsy:40%;--hr:155px;
     --fill:var(--ink);
     background-image:
-      /* veil: solid fill outside spotlight so distant glyphs stay normal */
+      /* veil: keep distant glyphs solid fill */
       radial-gradient(circle var(--hr) at var(--hsx) var(--hsy),
         color-mix(in srgb, var(--fill) calc((1 - var(--hpow)) * 100%), transparent) 0%,
-        color-mix(in srgb, var(--fill) calc((1 - var(--hpow) * .85) * 100%), transparent) 42%,
-        color-mix(in srgb, var(--fill) calc((1 - var(--hpow) * .35) * 100%), transparent) 62%,
-        var(--fill) 78%,
+        color-mix(in srgb, var(--fill) calc((1 - var(--hpow) * .9) * 100%), transparent) 38%,
+        color-mix(in srgb, var(--fill) calc((1 - var(--hpow) * .4) * 100%), transparent) 58%,
+        var(--fill) 76%,
         var(--fill) 100%),
-      /* hot specular core */
-      radial-gradient(circle calc(var(--hr) * .42) at var(--hsx) var(--hsy),
-        rgba(255,255,255,calc(.95 * var(--hpow))) 0%,
-        rgba(235,245,255,calc(.45 * var(--hpow))) 38%,
-        transparent 70%),
-      /* saturated pastel wash near cursor */
-      radial-gradient(circle calc(var(--hr) * .9) at var(--hsx) var(--hsy),
-        rgba(255,150,205,calc(.72 * var(--hpow))) 0%,
-        rgba(140,220,255,calc(.55 * var(--hpow))) 16%,
-        rgba(190,155,255,calc(.5 * var(--hpow))) 30%,
-        rgba(120,235,200,calc(.42 * var(--hpow))) 44%,
-        rgba(255,230,150,calc(.32 * var(--hpow))) 58%,
-        rgba(255,170,200,calc(.12 * var(--hpow))) 70%,
+      /* bright specular core */
+      radial-gradient(circle calc(var(--hr) * .38) at var(--hsx) var(--hsy),
+        rgba(255,255,255,calc(1 * var(--hpow))) 0%,
+        rgba(240,248,255,calc(.55 * var(--hpow))) 35%,
+        transparent 68%),
+      /* saturated pastel holo wash */
+      radial-gradient(circle calc(var(--hr) * .95) at var(--hsx) var(--hsy),
+        rgba(255,120,190,calc(.85 * var(--hpow))) 0%,
+        rgba(110,210,255,calc(.7 * var(--hpow))) 14%,
+        rgba(180,130,255,calc(.65 * var(--hpow))) 28%,
+        rgba(90,235,190,calc(.55 * var(--hpow))) 42%,
+        rgba(255,225,120,calc(.45 * var(--hpow))) 56%,
+        rgba(255,160,200,calc(.2 * var(--hpow))) 68%,
         transparent 80%),
-      /* fine foil grain */
-      url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27180%27%20height%3D%27180%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.85%27%20numOctaves%3D%273%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeComponentTransfer%3E%3CfeFuncA%20type%3D%27table%27%20tableValues%3D%270%200.55%27%2F%3E%3C%2FfeComponentTransfer%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%2523n%29%27%20opacity%3D%270.55%27%2F%3E%3C%2Fsvg%3E"),
-      /* silver radial-burst rays (bright/dim slices) */
+      /* silver radial-burst rays */
       repeating-conic-gradient(from var(--hang) at var(--hsx) var(--hsy),
-        rgba(255,255,255,calc(.92 * var(--hpow))) 0deg 3.2deg,
-        rgba(210,220,230,calc(.55 * var(--hpow))) 3.2deg 6.5deg,
-        rgba(245,250,255,calc(.82 * var(--hpow))) 6.5deg 9deg,
-        rgba(185,195,210,calc(.4 * var(--hpow))) 9deg 12.5deg,
-        rgba(230,240,255,calc(.7 * var(--hpow))) 12.5deg 15deg,
-        rgba(200,210,225,calc(.48 * var(--hpow))) 15deg 18deg),
-      /* soft pastel tint conic (shifts with --hang) */
-      conic-gradient(from calc(var(--hang) + 28deg) at var(--hsx) var(--hsy),
-        rgba(255,170,210,calc(.4 * var(--hpow))) 0deg,
-        rgba(150,220,255,calc(.38 * var(--hpow))) 60deg,
-        rgba(190,160,255,calc(.36 * var(--hpow))) 120deg,
-        rgba(130,240,205,calc(.34 * var(--hpow))) 180deg,
-        rgba(255,230,160,calc(.32 * var(--hpow))) 240deg,
-        rgba(255,180,200,calc(.36 * var(--hpow))) 300deg,
-        rgba(255,170,210,calc(.4 * var(--hpow))) 360deg),
-      /* silvery chrome pearlescent base */
-      linear-gradient(145deg,
-        rgba(255,255,255,calc(.55 * var(--hpow))) 0%,
-        rgba(210,220,235,calc(.45 * var(--hpow))) 35%,
-        rgba(235,240,250,calc(.5 * var(--hpow))) 55%,
-        rgba(195,205,220,calc(.4 * var(--hpow))) 75%,
-        rgba(245,248,255,calc(.5 * var(--hpow))) 100%),
+        rgba(255,255,255,calc(.98 * var(--hpow))) 0deg 2.8deg,
+        rgba(195,205,220,calc(.5 * var(--hpow))) 2.8deg 5.5deg,
+        rgba(250,252,255,calc(.9 * var(--hpow))) 5.5deg 7.8deg,
+        rgba(170,185,205,calc(.35 * var(--hpow))) 7.8deg 11deg,
+        rgba(235,242,255,calc(.78 * var(--hpow))) 11deg 13.5deg,
+        rgba(200,210,225,calc(.45 * var(--hpow))) 13.5deg 16.5deg),
+      /* shifting pastel tint spokes */
+      conic-gradient(from calc(var(--hang) + 20deg) at var(--hsx) var(--hsy),
+        rgba(255,150,210,calc(.55 * var(--hpow))) 0deg,
+        rgba(130,215,255,calc(.5 * var(--hpow))) 60deg,
+        rgba(185,145,255,calc(.5 * var(--hpow))) 120deg,
+        rgba(110,240,200,calc(.45 * var(--hpow))) 180deg,
+        rgba(255,230,140,calc(.45 * var(--hpow))) 240deg,
+        rgba(255,170,195,calc(.5 * var(--hpow))) 300deg,
+        rgba(255,150,210,calc(.55 * var(--hpow))) 360deg),
+      /* fine foil grain */
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27160%27%20height%3D%27160%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeComponentTransfer%3E%3CfeFuncA%20type%3D%27table%27%20tableValues%3D%270%200.4%27%2F%3E%3C%2FfeComponentTransfer%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%2523n%29%27%2F%3E%3C%2Fsvg%3E"),
+      /* pearlescent silver chrome base */
+      linear-gradient(135deg,
+        rgba(255,255,255,calc(.7 * var(--hpow))) 0%,
+        rgba(200,215,235,calc(.6 * var(--hpow))) 30%,
+        rgba(240,245,255,calc(.65 * var(--hpow))) 50%,
+        rgba(185,200,220,calc(.55 * var(--hpow))) 72%,
+        rgba(250,252,255,calc(.7 * var(--hpow))) 100%),
       linear-gradient(var(--fill), var(--fill));
-    background-size:auto,auto,auto,140px 140px,auto,auto,auto,auto;
-    background-position:var(--hsx) var(--hsy),var(--hsx) var(--hsy),var(--hsx) var(--hsy),0 0,var(--hsx) var(--hsy),var(--hsx) var(--hsy),0 0,0 0;
-    background-blend-mode:normal,normal,soft-light,overlay,normal,soft-light,normal,normal;
+    background-size:auto,auto,auto,auto,auto,130px 130px,auto,auto;
+    background-repeat:no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,repeat,no-repeat,no-repeat;
+    background-position:var(--hsx) var(--hsy),var(--hsx) var(--hsy),var(--hsx) var(--hsy),var(--hsx) var(--hsy),var(--hsx) var(--hsy),0 0,0 0,0 0;
     -webkit-background-clip:text;background-clip:text;
     color:transparent;-webkit-text-fill-color:transparent;
-    /* thin iridescent sticker rim */
-    filter:drop-shadow(0 0 .4px rgba(255,255,255,calc(.65 * var(--hpow))))
-           drop-shadow(0 0 .7px rgba(190,170,255,calc(.4 * var(--hpow))))
-           drop-shadow(0 0 1.1px rgba(140,220,255,calc(.28 * var(--hpow))));
+    filter:drop-shadow(0 0 .45px rgba(255,255,255,calc(.75 * var(--hpow))))
+           drop-shadow(0 0 .8px rgba(200,170,255,calc(.45 * var(--hpow))))
+           drop-shadow(0 0 1.2px rgba(120,210,255,calc(.35 * var(--hpow))));
   }
   h1 strong{--fill:var(--ink)}
   h1 .role{--fill:var(--mute)}
