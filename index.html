@@ -56,33 +56,69 @@ h1{font-weight:400;font-size:clamp(48px,8.2vw,118px);line-height:1.05;letter-spa
   position:relative;isolation:isolate}
 h1 strong{font-weight:800;color:var(--ink)}
 h1 .role{display:block;font-weight:400;font-size:.42em;line-height:1.15;letter-spacing:-.015em;color:var(--mute)}
-/* desktop holographic foil — localized ~145px radial spotlight; idle = solid cream/mute */
+/* desktop holo foil sticker — silver chrome rays + pastel wash; localized; idle = solid */
 @media (hover:hover) and (pointer:fine){
   h1 strong,h1 .role{
-    --hx:50%;--hy:50%;--hang:125deg;--hpow:0;--hsx:50%;--hsy:40%;--hr:145px;
+    --hx:50%;--hy:50%;--hang:125deg;--hpow:0;--hsx:50%;--hsy:40%;--hr:155px;
     --fill:var(--ink);
     background-image:
-      radial-gradient(circle calc(var(--hr) * .48) at var(--hsx) var(--hsy),
-        rgba(255,255,255,calc(.75 * var(--hpow))) 0%,
-        rgba(255,255,255,calc(.18 * var(--hpow))) 40%,
-        transparent 68%),
+      /* veil: solid fill outside spotlight so distant glyphs stay normal */
       radial-gradient(circle var(--hr) at var(--hsx) var(--hsy),
-        rgba(255,140,200,calc(.95 * var(--hpow))) 0%,
-        rgba(130,200,255,calc(.9 * var(--hpow))) 14%,
-        rgba(175,135,255,calc(.82 * var(--hpow))) 28%,
-        rgba(100,235,200,calc(.58 * var(--hpow))) 44%,
-        rgba(255,205,110,calc(.32 * var(--hpow))) 58%,
-        rgba(255,160,185,calc(.12 * var(--hpow))) 70%,
-        transparent 82%),
-      radial-gradient(circle calc(var(--hr) * .7) at var(--hsx) var(--hsy),
-        rgba(180,220,255,calc(.4 * var(--hpow))) 0%,
-        rgba(255,200,160,calc(.22 * var(--hpow))) 45%,
-        transparent 72%),
+        color-mix(in srgb, var(--fill) calc((1 - var(--hpow)) * 100%), transparent) 0%,
+        color-mix(in srgb, var(--fill) calc((1 - var(--hpow) * .85) * 100%), transparent) 42%,
+        color-mix(in srgb, var(--fill) calc((1 - var(--hpow) * .35) * 100%), transparent) 62%,
+        var(--fill) 78%,
+        var(--fill) 100%),
+      /* hot specular core */
+      radial-gradient(circle calc(var(--hr) * .42) at var(--hsx) var(--hsy),
+        rgba(255,255,255,calc(.95 * var(--hpow))) 0%,
+        rgba(235,245,255,calc(.45 * var(--hpow))) 38%,
+        transparent 70%),
+      /* saturated pastel wash near cursor */
+      radial-gradient(circle calc(var(--hr) * .9) at var(--hsx) var(--hsy),
+        rgba(255,150,205,calc(.72 * var(--hpow))) 0%,
+        rgba(140,220,255,calc(.55 * var(--hpow))) 16%,
+        rgba(190,155,255,calc(.5 * var(--hpow))) 30%,
+        rgba(120,235,200,calc(.42 * var(--hpow))) 44%,
+        rgba(255,230,150,calc(.32 * var(--hpow))) 58%,
+        rgba(255,170,200,calc(.12 * var(--hpow))) 70%,
+        transparent 80%),
+      /* fine foil grain */
+      url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27180%27%20height%3D%27180%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.85%27%20numOctaves%3D%273%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeComponentTransfer%3E%3CfeFuncA%20type%3D%27table%27%20tableValues%3D%270%200.55%27%2F%3E%3C%2FfeComponentTransfer%3E%3C%2Ffilter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%2523n%29%27%20opacity%3D%270.55%27%2F%3E%3C%2Fsvg%3E"),
+      /* silver radial-burst rays (bright/dim slices) */
+      repeating-conic-gradient(from var(--hang) at var(--hsx) var(--hsy),
+        rgba(255,255,255,calc(.92 * var(--hpow))) 0deg 3.2deg,
+        rgba(210,220,230,calc(.55 * var(--hpow))) 3.2deg 6.5deg,
+        rgba(245,250,255,calc(.82 * var(--hpow))) 6.5deg 9deg,
+        rgba(185,195,210,calc(.4 * var(--hpow))) 9deg 12.5deg,
+        rgba(230,240,255,calc(.7 * var(--hpow))) 12.5deg 15deg,
+        rgba(200,210,225,calc(.48 * var(--hpow))) 15deg 18deg),
+      /* soft pastel tint conic (shifts with --hang) */
+      conic-gradient(from calc(var(--hang) + 28deg) at var(--hsx) var(--hsy),
+        rgba(255,170,210,calc(.4 * var(--hpow))) 0deg,
+        rgba(150,220,255,calc(.38 * var(--hpow))) 60deg,
+        rgba(190,160,255,calc(.36 * var(--hpow))) 120deg,
+        rgba(130,240,205,calc(.34 * var(--hpow))) 180deg,
+        rgba(255,230,160,calc(.32 * var(--hpow))) 240deg,
+        rgba(255,180,200,calc(.36 * var(--hpow))) 300deg,
+        rgba(255,170,210,calc(.4 * var(--hpow))) 360deg),
+      /* silvery chrome pearlescent base */
+      linear-gradient(145deg,
+        rgba(255,255,255,calc(.55 * var(--hpow))) 0%,
+        rgba(210,220,235,calc(.45 * var(--hpow))) 35%,
+        rgba(235,240,250,calc(.5 * var(--hpow))) 55%,
+        rgba(195,205,220,calc(.4 * var(--hpow))) 75%,
+        rgba(245,248,255,calc(.5 * var(--hpow))) 100%),
       linear-gradient(var(--fill), var(--fill));
+    background-size:auto,auto,auto,140px 140px,auto,auto,auto,auto;
+    background-position:var(--hsx) var(--hsy),var(--hsx) var(--hsy),var(--hsx) var(--hsy),0 0,var(--hsx) var(--hsy),var(--hsx) var(--hsy),0 0,0 0;
+    background-blend-mode:normal,normal,soft-light,overlay,normal,soft-light,normal,normal;
     -webkit-background-clip:text;background-clip:text;
     color:transparent;-webkit-text-fill-color:transparent;
-    filter:drop-shadow(0 0 .35px rgba(200,230,255,calc(.28 * var(--hpow))))
-           drop-shadow(0 0 .5px rgba(255,170,210,calc(.2 * var(--hpow))));
+    /* thin iridescent sticker rim */
+    filter:drop-shadow(0 0 .4px rgba(255,255,255,calc(.65 * var(--hpow))))
+           drop-shadow(0 0 .7px rgba(190,170,255,calc(.4 * var(--hpow))))
+           drop-shadow(0 0 1.1px rgba(140,220,255,calc(.28 * var(--hpow))));
   }
   h1 strong{--fill:var(--ink)}
   h1 .role{--fill:var(--mute)}
@@ -530,7 +566,8 @@ document.querySelectorAll("[data-statics-track]").forEach(t => { t.innerHTML += 
         s.tHx = s.tHsx; s.tHy = s.tHsy;
         const cx = (mx - (r.left + r.width / 2)) / Math.max(r.width, 1);
         const cy = (my - (r.top + r.height / 2)) / Math.max(r.height, 1);
-        s.tHang = (Math.atan2(cy, cx) * 180 / Math.PI + 360) % 360;
+        /* orbit angle + travel spin so rays sweep like real foil */
+        s.tHang = (Math.atan2(cy, cx) * 180 / Math.PI + lx * 0.35 + ly * 0.2 + 360) % 360;
       }
 
       s.pow += (s.tPow - s.pow) * K;
@@ -551,7 +588,7 @@ document.querySelectorAll("[data-statics-track]").forEach(t => { t.innerHTML += 
         el.style.setProperty("--hsx", (s.hsx * 100).toFixed(2) + "%");
         el.style.setProperty("--hsy", (s.hsy * 100).toFixed(2) + "%");
         el.style.setProperty("--hang", s.hang.toFixed(2) + "deg");
-        el.style.setProperty("--hr", "145px");
+        el.style.setProperty("--hr", "155px");
       }
       if (s.pow > 0.004) any = true;
     }
