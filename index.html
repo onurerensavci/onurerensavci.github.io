@@ -53,47 +53,11 @@ a{color:inherit;text-decoration:none}
 @media (min-width:1800px){.hero.wrap{max-width:min(2000px,90vw)}}
 h1{font-weight:400;font-size:clamp(48px,8.2vw,118px);line-height:1.05;letter-spacing:-.025em;margin-left:0;
   display:flex;flex-direction:column;flex-wrap:nowrap;align-items:flex-start;gap:.08em;
-  position:relative;isolation:isolate}
-h1 strong{font-weight:800;color:var(--ink)}
-h1 .role{display:block;font-weight:400;font-size:.42em;line-height:1.15;letter-spacing:-.015em;color:var(--mute)}
-/* desktop holographic foil — localized ~145px radial spotlight; idle = solid cream/mute */
-@media (hover:hover) and (pointer:fine){
-  h1 strong,h1 .role{
-    --hx:50%;--hy:50%;--hang:125deg;--hpow:0;--hsx:50%;--hsy:40%;--hr:180px;
-    --fill:var(--ink);
-    background-image:
-      radial-gradient(circle calc(var(--hr) * .48) at var(--hsx) var(--hsy),
-        rgba(255,255,255,calc(.75 * var(--hpow))) 0%,
-        rgba(255,255,255,calc(.18 * var(--hpow))) 40%,
-        transparent 68%),
-      radial-gradient(circle var(--hr) at var(--hsx) var(--hsy),
-        rgba(255,140,200,calc(.95 * var(--hpow))) 0%,
-        rgba(130,200,255,calc(.9 * var(--hpow))) 14%,
-        rgba(175,135,255,calc(.82 * var(--hpow))) 28%,
-        rgba(100,235,200,calc(.58 * var(--hpow))) 44%,
-        rgba(255,205,110,calc(.32 * var(--hpow))) 58%,
-        rgba(255,160,185,calc(.12 * var(--hpow))) 70%,
-        transparent 82%),
-      radial-gradient(circle calc(var(--hr) * .7) at var(--hsx) var(--hsy),
-        rgba(180,220,255,calc(.4 * var(--hpow))) 0%,
-        rgba(255,200,160,calc(.22 * var(--hpow))) 45%,
-        transparent 72%),
-      linear-gradient(var(--fill), var(--fill));
-    -webkit-background-clip:text;background-clip:text;
-    color:transparent;-webkit-text-fill-color:transparent;
-    filter:drop-shadow(0 0 .35px rgba(200,230,255,calc(.28 * var(--hpow))))
-           drop-shadow(0 0 .5px rgba(255,170,210,calc(.2 * var(--hpow))));
-  }
-  h1 strong{--fill:var(--ink)}
-  h1 .role{--fill:var(--mute)}
-}
-@media (prefers-reduced-motion:reduce){
-  h1 strong,h1 .role{
-    background:none!important;filter:none!important;
-    color:var(--fill,var(--ink));-webkit-text-fill-color:var(--fill,var(--ink))
-  }
-  h1 .role{color:var(--mute);-webkit-text-fill-color:var(--mute)}
-}
+  transition:color .35s ease}
+h1 strong{font-weight:800;color:var(--ink);transition:color .35s ease}
+h1 .role{display:block;font-weight:400;font-size:.42em;line-height:1.15;color:var(--mute);letter-spacing:-.015em;transition:color .35s ease}
+h1:hover strong{color:#c7d7ff}
+h1:hover .role{color:#9db7ff}
 .lede{margin-top:28px;max-width:42ch;font-size:clamp(20px,2.1vw,30px);color:var(--mute);line-height:1.4}
 .lede strong{color:var(--ink);font-weight:500}
 
@@ -278,8 +242,8 @@ html:not(.js) .rv{opacity:1;transform:none}
 </header>
 
 <main id="top">
-  <section class="hero wrap" id="hero">
-    <h1 class="rv" id="hero-title"><strong>Onur Eren Savcı</strong> <span class="role">Marketing Artist</span></h1>
+  <section class="hero wrap">
+    <h1 class="rv"><strong>Onur Eren Savcı</strong> <span class="role">Marketing Artist</span></h1>
     <p class="lede rv" style="--d:.2s"><strong>UA videos, playable ads and statics</strong> for mobile games. Based in Istanbul.</p>
   </section>
 
@@ -473,91 +437,6 @@ document.querySelectorAll("[data-statics-track]").forEach(t => { t.innerHTML += 
   closeBtn.addEventListener("click", e => { e.stopPropagation(); close(); });
   lb.addEventListener("click", e => { if (e.target === lb) close(); });
   addEventListener("keydown", e => { if (e.key === "Escape") close(); });
-})();
-
-
-/* hero holographic foil — tight proximity, per-glyph, localized radial (desktop fine pointer) */
-(() => {
-  if (!matchMedia("(hover:hover) and (pointer:fine)").matches) return;
-  if (reduce) return;
-  const hero = document.getElementById("hero");
-  const title = document.getElementById("hero-title");
-  if (!hero || !title) return;
-  const parts = [...title.querySelectorAll("strong, .role")];
-  const st = parts.map(() => ({
-    pow: 0, hx: 0.5, hy: 0.5, hang: 125, hsx: 0.5, hsy: 0.4,
-    tPow: 0, tHx: 0.5, tHy: 0.5, tHang: 125, tHsx: 0.5, tHsy: 0.4
-  }));
-  let mx = -9999, my = -9999, visible = true, raf = 0;
-  const PAD = 60;      /* activate over / ~60px from each glyph box */
-  const FALL = 1.55;   /* smooth falloff; light wash still visible near PAD edge */
-  const K = 0.18;      /* lerp */
-
-  const io = new IntersectionObserver(([e]) => {
-    visible = e.isIntersecting;
-    if (visible && !raf) raf = requestAnimationFrame(tick);
-  }, { rootMargin: "40px" });
-  io.observe(hero);
-
-  addEventListener("pointermove", e => {
-    if (e.pointerType && e.pointerType !== "mouse") return;
-    mx = e.clientX; my = e.clientY;
-    if (visible && !raf) raf = requestAnimationFrame(tick);
-  }, { passive: true });
-  document.addEventListener("mouseleave", () => { mx = my = -9999; });
-
-  function tick(){
-    raf = 0;
-    let any = false;
-    for (let i = 0; i < parts.length; i++) {
-      const el = parts[i], s = st[i];
-      const r = el.getBoundingClientRect();
-      let tPow = 0;
-      if (visible && mx > -9000) {
-        const dx = Math.max(r.left - PAD - mx, 0, mx - (r.right + PAD));
-        const dy = Math.max(r.top - PAD - my, 0, my - (r.bottom + PAD));
-        const dist = Math.hypot(dx, dy);
-        if (dist < PAD) {
-          const t = 1 - dist / PAD;
-          tPow = Math.pow(t, FALL);
-        }
-      }
-      s.tPow = tPow;
-      if (tPow > 0.001) {
-        const lx = mx - r.left, ly = my - r.top;
-        s.tHsx = lx / Math.max(1, r.width);
-        s.tHsy = ly / Math.max(1, r.height);
-        s.tHx = s.tHsx; s.tHy = s.tHsy;
-        const cx = (mx - (r.left + r.width / 2)) / Math.max(r.width, 1);
-        const cy = (my - (r.top + r.height / 2)) / Math.max(r.height, 1);
-        s.tHang = (Math.atan2(cy, cx) * 180 / Math.PI + 360) % 360;
-      }
-
-      s.pow += (s.tPow - s.pow) * K;
-      s.hx += (s.tHx - s.hx) * K;
-      s.hy += (s.tHy - s.hy) * K;
-      s.hsx += (s.tHsx - s.hsx) * K;
-      s.hsy += (s.tHsy - s.hsy) * K;
-      let dA = ((s.tHang - s.hang + 540) % 360) - 180;
-      s.hang += dA * K;
-
-      if (s.pow < 0.008) {
-        el.style.setProperty("--hpow", "0");
-      } else {
-        any = true;
-        el.style.setProperty("--hpow", s.pow.toFixed(4));
-        el.style.setProperty("--hx", (s.hx * 100).toFixed(2) + "%");
-        el.style.setProperty("--hy", (s.hy * 100).toFixed(2) + "%");
-        el.style.setProperty("--hsx", (s.hsx * 100).toFixed(2) + "%");
-        el.style.setProperty("--hsy", (s.hsy * 100).toFixed(2) + "%");
-        el.style.setProperty("--hang", s.hang.toFixed(2) + "deg");
-        el.style.setProperty("--hr", "180px");
-      }
-      if (s.pow > 0.004) any = true;
-    }
-    if (visible || any) raf = requestAnimationFrame(tick);
-  }
-  raf = requestAnimationFrame(tick);
 })();
 
 /* copy email */
