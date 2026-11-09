@@ -53,11 +53,31 @@ a{color:inherit;text-decoration:none}
 @media (min-width:1800px){.hero.wrap{max-width:min(2000px,90vw)}}
 h1{font-weight:400;font-size:clamp(48px,8.2vw,118px);line-height:1.05;letter-spacing:-.025em;margin-left:0;
   display:flex;flex-direction:column;flex-wrap:nowrap;align-items:flex-start;gap:.08em;
-  transition:color .35s ease}
-h1 strong{font-weight:800;color:var(--ink);transition:color .35s ease}
-h1 .role{display:block;font-weight:400;font-size:.42em;line-height:1.15;color:var(--mute);letter-spacing:-.015em;transition:color .35s ease}
-h1:hover strong{color:#c7d7ff}
-h1:hover .role{color:#9db7ff}
+  position:relative;isolation:isolate;z-index:1}
+h1 strong,h1 .role{
+  --gx:-999px;--gy:-999px;--gpow:0;
+  background-image:
+    radial-gradient(circle calc(90px + 70px * var(--gpow)) at var(--gx) var(--gy),
+      rgba(255,255,255,calc(.92 * var(--gpow))) 0%,
+      rgba(199,215,255,calc(.55 * var(--gpow))) 22%,
+      rgba(255,230,170,calc(.28 * var(--gpow))) 42%,
+      transparent 62%),
+    linear-gradient(var(--fill), var(--fill));
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
+  transition:filter .25s ease}
+h1 strong{font-weight:800;--fill:var(--ink)}
+h1 .role{display:block;font-weight:400;font-size:.42em;line-height:1.15;letter-spacing:-.015em;--fill:var(--mute)}
+.hero{position:relative}
+#hero-glitter{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+@media (hover:none),(pointer:coarse){
+  h1 strong,h1 .role{background:none;color:var(--fill);-webkit-text-fill-color:var(--fill)}
+  #hero-glitter{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  #hero-glitter{display:none}
+  h1 strong,h1 .role{--gpow:0}
+}
 .lede{margin-top:28px;max-width:42ch;font-size:clamp(20px,2.1vw,30px);color:var(--mute);line-height:1.4}
 .lede strong{color:var(--ink);font-weight:500}
 
@@ -242,8 +262,9 @@ html:not(.js) .rv{opacity:1;transform:none}
 </header>
 
 <main id="top">
-  <section class="hero wrap">
-    <h1 class="rv"><strong>Onur Eren Savcı</strong> <span class="role">Marketing Artist</span></h1>
+  <section class="hero wrap" id="hero">
+    <h1 class="rv" id="hero-title"><strong>Onur Eren Savcı</strong> <span class="role">Marketing Artist</span></h1>
+    <canvas id="hero-glitter" aria-hidden="true"></canvas>
     <p class="lede rv" style="--d:.2s"><strong>UA videos, playable ads and statics</strong> for mobile games. Based in Istanbul.</p>
   </section>
 
@@ -437,6 +458,127 @@ document.querySelectorAll("[data-statics-track]").forEach(t => { t.innerHTML += 
   closeBtn.addEventListener("click", e => { e.stopPropagation(); close(); });
   lb.addEventListener("click", e => { if (e.target === lb) close(); });
   addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+})();
+
+
+/* hero glitter — proximity shimmer + sparkle particles (desktop fine pointer only) */
+(() => {
+  if (!matchMedia("(hover:hover) and (pointer:fine)").matches) return;
+  if (reduce) return;
+  const hero = document.getElementById("hero");
+  const title = document.getElementById("hero-title");
+  const canvas = document.getElementById("hero-glitter");
+  if (!hero || !title || !canvas) return;
+  const ctx = canvas.getContext("2d", { alpha: true });
+  const parts = title.querySelectorAll("strong, .role");
+  const particles = [];
+  const MAX = 60;
+  let mx = -9999, my = -9999, visible = true, raf = 0, last = 0, dpr = 1;
+
+  const io = new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting;
+    if (visible && !raf) raf = requestAnimationFrame(tick);
+  }, { rootMargin: "40px" });
+  io.observe(hero);
+
+  function resize(){
+    const r = hero.getBoundingClientRect();
+    dpr = Math.min(2, devicePixelRatio || 1);
+    canvas.width = Math.max(1, Math.round(r.width * dpr));
+    canvas.height = Math.max(1, Math.round(r.height * dpr));
+    canvas.style.width = r.width + "px";
+    canvas.style.height = r.height + "px";
+  }
+  resize();
+  addEventListener("resize", resize, { passive: true });
+
+  addEventListener("pointermove", e => {
+    if (e.pointerType && e.pointerType !== "mouse") return;
+    mx = e.clientX; my = e.clientY;
+  }, { passive: true });
+  document.addEventListener("mouseleave", () => { mx = my = -9999; });
+
+  function spawn(x, y, intensity){
+    if (particles.length >= MAX) particles.shift();
+    const a = Math.random() * Math.PI * 2;
+    const sp = 0.15 + Math.random() * 0.7;
+    particles.push({
+      x, y,
+      vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 0.25,
+      life: 1, decay: 0.012 + Math.random() * 0.02,
+      size: 1.2 + Math.random() * 2.6 * intensity,
+      rot: Math.random() * Math.PI, spin: (Math.random() - 0.5) * 0.12,
+      hue: Math.random() < 0.55 ? 0 : (Math.random() < 0.5 ? 210 : 45)
+    });
+  }
+
+  function drawStar(x, y, r, rot, alpha, hue){
+    ctx.save();
+    ctx.translate(x, y); ctx.rotate(rot);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = hue === 0 ? "#fff7e8" : (hue === 210 ? "#c7d7ff" : "#ffe6a8");
+    ctx.beginPath();
+    for (let i = 0; i < 4; i++) {
+      const a = i * Math.PI / 2;
+      ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+      ctx.lineTo(Math.cos(a + Math.PI / 4) * r * 0.35, Math.sin(a + Math.PI / 4) * r * 0.35);
+    }
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+
+  function tick(now){
+    raf = 0;
+    if (!visible) { ctx.clearRect(0,0,canvas.width,canvas.height); return; }
+    raf = requestAnimationFrame(tick);
+    const dt = Math.min(32, now - (last || now)); last = now;
+    const hr = hero.getBoundingClientRect();
+    const tr = title.getBoundingClientRect();
+    // proximity to title box (expanded)
+    const pad = 120;
+    const dx = Math.max(tr.left - pad - mx, 0, mx - (tr.right + pad));
+    const dy = Math.max(tr.top - pad - my, 0, my - (tr.bottom + pad));
+    const dist = Math.hypot(dx, dy);
+    const near = dist === 0;
+    const intensity = near ? 1 : Math.max(0, 1 - dist / pad);
+
+    // update text shimmer vars in local coords of each text node
+    for (const el of parts) {
+      const r = el.getBoundingClientRect();
+      if (intensity <= 0.01) {
+        el.style.setProperty("--gx", "-999px");
+        el.style.setProperty("--gy", "-999px");
+        el.style.setProperty("--gpow", "0");
+      } else {
+        el.style.setProperty("--gx", (mx - r.left) + "px");
+        el.style.setProperty("--gy", (my - r.top) + "px");
+        el.style.setProperty("--gpow", intensity.toFixed(3));
+      }
+    }
+
+    // spawn near cursor if over/near title
+    if (intensity > 0.15 && Math.random() < 0.35 + intensity * 0.55) {
+      const n = 1 + (Math.random() * (1 + intensity * 2) | 0);
+      for (let i = 0; i < n; i++) {
+        spawn(mx - hr.left + (Math.random() - 0.5) * 28,
+              my - hr.top + (Math.random() - 0.5) * 18,
+              intensity);
+      }
+    }
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, hr.width, hr.height);
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx * dt * 0.06; p.y += p.vy * dt * 0.06;
+      p.vy -= 0.004 * dt * 0.06;
+      p.rot += p.spin;
+      p.life -= p.decay * dt * 0.06;
+      if (p.life <= 0) { particles.splice(i, 1); continue; }
+      drawStar(p.x, p.y, p.size * (0.6 + p.life * 0.6), p.rot, Math.min(1, p.life * 1.2) * 0.95, p.hue);
+    }
+  }
+  raf = requestAnimationFrame(tick);
 })();
 
 /* copy email */
