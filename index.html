@@ -490,7 +490,7 @@ document.querySelectorAll("[data-statics-track]").forEach(t => { t.innerHTML += 
   }));
   let mx = -9999, my = -9999, visible = true, raf = 0;
   const PAD = 60;      /* activate over / ~60px from each glyph box */
-  const FALL = 3.2;    /* steep proximity curve */
+  const FALL = 1.55;   /* smooth falloff; light wash still visible near PAD edge */
   const K = 0.18;      /* lerp */
 
   const io = new IntersectionObserver(([e]) => {
