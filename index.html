@@ -54,10 +54,10 @@ a{color:inherit;text-decoration:none}
 h1{--hero-title-size:clamp(48px,8.2vw,118px);
   font-weight:400;font-size:var(--hero-title-size);line-height:1.05;letter-spacing:-.025em;margin-left:0;
   display:flex;flex-direction:column;flex-wrap:nowrap;align-items:flex-start;gap:.08em}
-h1 strong,h1 .role{font-size:var(--hero-title-size)}
-h1 strong{font-weight:800;color:#fff}
-h1 .role{display:block;font-weight:400;line-height:1.15;color:#fff;letter-spacing:-.015em}
-.hero-stat{margin:10px 0 0;font-size:28px;font-weight:400;letter-spacing:-.01em;
+h1 strong{font-weight:800;color:#fff;font-size:var(--hero-title-size)}
+h1 .role{display:block;font-weight:400;line-height:1.15;color:#fff;letter-spacing:-.015em;white-space:nowrap;
+  font-size:calc(var(--hero-title-size) * 1.07)}
+.hero-stat{margin:10px 0 0;font-size:24px;font-weight:400;letter-spacing:-.01em;
   color:rgba(255,255,255,.45);line-height:1.35;white-space:nowrap}
 .hero-stat .sep{font:inherit;color:inherit}
 .hero-stat .when{color:rgba(255,255,255,.32)}
@@ -188,7 +188,7 @@ html:not(.js) .rv{opacity:1;transform:none}
 
 @media (max-width:760px){
   h1{--hero-title-size:clamp(28px,7.2vw,40px);font-size:var(--hero-title-size);gap:.12em;line-height:1.12}
-  h1 strong,h1 .role{font-size:var(--hero-title-size);white-space:nowrap}
+  h1 strong,h1 .role{white-space:nowrap}
 
   .nav .wrap{height:56px}
   .brand{font-size:13px;gap:6px;white-space:nowrap;letter-spacing:-.02em}
@@ -201,7 +201,7 @@ html:not(.js) .rv{opacity:1;transform:none}
   .statics-track{gap:10px}
   .card{width:clamp(160px,42vw,200px);border-radius:12px}
   .hero{padding-block:56px 28px}
-  .hero-stat{margin-top:8px;font-size:23.5px;white-space:normal;text-wrap:balance}
+  .hero-stat{margin-top:8px;font-size:20px;white-space:normal;text-wrap:balance}
   .lede{margin-top:22px}
   .reel{padding-block:8px 28px}
   .frame{border-radius:12px}
@@ -441,6 +441,48 @@ document.querySelectorAll("[data-statics-track]").forEach(t => { t.innerHTML += 
   closeBtn.addEventListener("click", e => { e.stopPropagation(); close(); });
   lb.addEventListener("click", e => { if (e.target === lb) close(); });
   addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+})();
+
+
+/* fit "Marketing Artist" to the same rendered width as the name */
+(() => {
+  const name = document.querySelector("h1 strong");
+  const role = document.querySelector("h1 .role");
+  if (!name || !role) return;
+  let raf = 0;
+
+  function measure(el){ return el.getBoundingClientRect().width; }
+
+  function fit(){
+    raf = 0;
+    role.style.fontSize = "";
+    const target = measure(name);
+    if (target < 8) return;
+    const base = parseFloat(getComputedStyle(name).fontSize) || 40;
+    let lo = base * 0.85, hi = base * 1.4;
+    for (let i = 0; i < 20; i++){
+      const mid = (lo + hi) / 2;
+      role.style.fontSize = mid + "px";
+      if (measure(role) < target) lo = mid; else hi = mid;
+    }
+    const fs = (lo + hi) / 2;
+    role.style.fontSize = fs + "px";
+    const w = measure(role);
+    if (w > 0 && Math.abs(w - target) > 0.25){
+      role.style.fontSize = (fs * target / w) + "px";
+    }
+  }
+
+  function schedule(){ if (!raf) raf = requestAnimationFrame(fit); }
+
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+  addEventListener("resize", schedule, { passive: true });
+  if (window.visualViewport) visualViewport.addEventListener("resize", schedule, { passive: true });
+  if (typeof ResizeObserver === "function"){
+    const ro = new ResizeObserver(schedule);
+    ro.observe(name);
+  }
+  schedule();
 })();
 
 /* copy email */
