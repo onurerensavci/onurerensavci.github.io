@@ -1,0 +1,9 @@
+/* R4 */
+.rv{transition:opacity .5s ease,transform .5s ease;transition-delay:var(--d,0s)}
+.hero h1.rv{transition-delay:0s}
+.hero .hero-stat.rv{transition-delay:.06s}
+.hero .lede.rv{transition-delay:.12s}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+}
+/* /R4 */
