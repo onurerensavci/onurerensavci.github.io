@@ -1,0 +1,5 @@
+/* G1: keep marquee pause-on-hover after reverting the R10 grid */
+.statics-mq:hover .statics-track{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){
+  .statics-mq:hover .statics-track{animation-play-state:paused}
+}
