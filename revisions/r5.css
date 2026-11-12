@@ -1,0 +1,18 @@
+/* R5 */
+.hero{position:relative}
+.hero-collage{display:none}
+@media (min-width:761px){
+  .hero{overflow-x:hidden}
+  .hero-collage{display:block;position:absolute;right:max(16px,var(--pad));top:50%;transform:translateY(-50%);
+    width:min(400px,36%);aspect-ratio:1.05;pointer-events:none;z-index:1}
+  .hero-collage img{position:absolute;width:58%;aspect-ratio:1;object-fit:cover;border-radius:14px;
+    box-shadow:0 0 0 1px rgba(245,241,232,.12),0 24px 50px -18px rgba(0,0,0,.7)}
+  .hero-collage img:nth-child(1){left:0;top:10%;transform:rotate(-8deg);z-index:2}
+  .hero-collage img:nth-child(2){right:2%;top:0;transform:rotate(6deg);z-index:1}
+  .hero-collage img:nth-child(3){left:22%;bottom:2%;transform:rotate(3deg);z-index:3}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-collage img{transform:none}
+  .hero-collage img:nth-child(1),.hero-collage img:nth-child(2),.hero-collage img:nth-child(3){transform:none}
+}
+/* /R5 */
