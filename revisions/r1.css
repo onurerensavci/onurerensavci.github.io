@@ -1,0 +1,4 @@
+/* R1 */
+#lb-img{max-height:90vh;max-width:90vw;width:auto;height:auto;object-fit:contain}
+.lb-fig{max-width:min(90vw,100%);max-height:min(90vh,100%)}
+/* /R1 */
