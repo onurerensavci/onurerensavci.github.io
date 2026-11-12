@@ -1,0 +1,15 @@
+/* R8 */
+@media (min-width:761px){
+  .about{grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  .about-stats{display:flex;flex-direction:column;gap:20px;padding-top:0;width:100%}
+}
+.about-stats{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+.about-stat{border-top:1px solid var(--line);padding-top:16px}
+.about-stat strong{display:block;font-size:clamp(22px,2.4vw,32px);font-weight:700;letter-spacing:-.03em;color:#f5f1e8;line-height:1.1}
+.about-stat span{display:block;margin-top:6px;color:var(--mute);font-size:var(--t-ui)}
+.about-stat-placeholder strong,.about-stat-placeholder span{color:var(--dim)}
+@media (max-width:760px){
+  .about{grid-template-columns:1fr}
+  .about-stats{margin-top:24px}
+}
+/* /R8 */
