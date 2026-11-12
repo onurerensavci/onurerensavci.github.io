@@ -1,0 +1,15 @@
+/* R12 */
+@media (max-width:760px){
+  .links .ab{display:inline-flex}
+  .nav .wrap{height:auto;min-height:56px}
+  .links{gap:4px}
+  .links a{min-height:44px;padding:0 8px;display:inline-flex;align-items:center;box-sizing:border-box;font-size:12px}
+  .brand-last{display:none}
+}
+@media (max-width:360px){
+  .links .ab{display:inline-flex}
+  .brand{max-width:none;overflow:visible;text-overflow:unset;font-size:13px}
+  .links{gap:2px;font-size:11px;flex:1}
+  .links a{min-height:44px;padding:0 6px;font-size:11px}
+}
+/* /R12 */
