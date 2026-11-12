@@ -1,0 +1,6 @@
+/* R3 */
+.hero.wrap,.reel.wrap{max-width:var(--max)}
+@media (min-width:1800px){
+  .hero.wrap,.reel.wrap{max-width:var(--max)}
+}
+/* /R3 */
