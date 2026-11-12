@@ -1,0 +1,7 @@
+/* R6 */
+.hero-stat{color:#f5f1e8;font-weight:500}
+.footer-updated{color:var(--mute);font-weight:400}
+@media (max-width:760px){
+  footer .wrap{height:auto;min-height:64px;flex-wrap:wrap;gap:8px;padding-block:12px}
+}
+/* /R6 */
