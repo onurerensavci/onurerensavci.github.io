@@ -1,10 +1,11 @@
 /* F1: hero two-column grid; collage stays in its cell, never overlaps the title */
 .hero-copy{min-width:0}
+.hero-copy h1 strong,.hero-copy h1 .role{white-space:nowrap}
 @media (min-width:1100px){
   .hero{
     display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(0,240px);
-    column-gap:clamp(20px,3vw,40px);
+    grid-template-columns:minmax(0,1fr) minmax(0,220px);
+    column-gap:24px;
     align-items:center;
     overflow:visible;
   }
@@ -17,7 +18,7 @@
     right:auto;top:auto;left:auto;
     transform:none;
     width:100%;
-    max-width:240px;
+    max-width:220px;
     aspect-ratio:1.05;
     pointer-events:none;
     z-index:1;
