@@ -244,6 +244,7 @@ html:not(.js) .rv{opacity:1;transform:none}
 <body>
 <link rel="stylesheet" href="revisions/r1.css">
 <header class="nav" id="nav">
+<link rel="stylesheet" href="revisions/r2.css">
   <div class="wrap">
     <a class="brand" href="#top"><i></i>Onur Eren Savcı</a>
     <nav class="links" aria-label="Main">
@@ -264,8 +265,12 @@ html:not(.js) .rv{opacity:1;transform:none}
 
   <section class="reel wrap" id="showreel" aria-labelledby="reel-t">
     <div class="head rv"><h2 class="label" id="reel-t">/ Showreel</h2></div>
-    <div class="frame rv" style="--d:.1s">
-      <iframe src="https://www.youtube-nocookie.com/embed/zPc8RC-bSX4?rel=0&amp;enablejsapi=1&amp;vq=hd1080&amp;hd=1" id="reelfr" title="Onur Eren Savcı — Showreel" loading="lazy"
+    <div class="frame rv" style="--d:.1s" data-poster="https://i.ytimg.com/vi/zPc8RC-bSX4/maxresdefault.jpg">
+      <img class="reel-cover" alt="" aria-hidden="true">
+      <button type="button" class="reel-play" aria-label="Play showreel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <iframe id="reelfr" title="Onur Eren Savcı — Showreel"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
@@ -350,6 +355,7 @@ html:not(.js) .rv{opacity:1;transform:none}
 </footer>
 
 <div id="glow" aria-hidden="true"></div>
+<script src="revisions/r2.js" defer></script>
 <div id="face" aria-hidden="true"><b>🙂</b></div>
 <div id="touch-reactions" aria-hidden="true"></div>
 <div id="burst" aria-hidden="true"></div>
