@@ -1,0 +1,11 @@
+/* P1: side projects section */
+.side{padding-block:0 120px;display:grid;gap:24px}
+.side-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.side-card{display:flex;flex-direction:column;gap:12px;padding:28px;border-radius:16px;background:var(--bg2);box-shadow:0 0 0 1px var(--line);transition:box-shadow .3s,transform .3s}
+.side-card:hover,.side-card:focus-visible{box-shadow:0 0 0 1px rgba(245,241,232,.22),0 30px 60px -30px rgba(59,130,246,.45);transform:translateY(-3px);outline:none}
+.side-card h3{font-size:clamp(22px,2.2vw,28px);font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.side-card h3 span{color:var(--blue);font-weight:500}
+.side-card p{color:var(--mute);font-size:var(--t-ui);line-height:1.55;max-width:52ch}
+.side-tags{list-style:none;display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:auto;font-family:var(--mono);font-size:12px;color:var(--dim)}
+@media (max-width:760px){.side{padding-block:0 80px}.side-grid{grid-template-columns:1fr}.side-card{padding:22px}}
+@media (prefers-reduced-motion:reduce){.side-card,.side-card:hover{transition:none;transform:none}}
