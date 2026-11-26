@@ -1,0 +1,9 @@
+/* P2: faint project image behind each side-project card */
+.side-card{position:relative;overflow:hidden;isolation:isolate}
+.side-card>*{position:relative;z-index:2}
+.side-card>.side-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;opacity:.16;pointer-events:none;transition:opacity .4s ease}
+.side-card::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg,rgba(13,13,15,.92) 0%,rgba(13,13,15,.7) 55%,rgba(13,13,15,.35) 100%)}
+.side-card:hover>.side-bg,.side-card:focus-visible>.side-bg{opacity:.24}
+@media (max-width:760px){.side-card::before{background:linear-gradient(180deg,rgba(13,13,15,.55),rgba(13,13,15,.9))}}
+@media (prefers-reduced-motion:reduce){.side-card>.side-bg{transition:none}}
